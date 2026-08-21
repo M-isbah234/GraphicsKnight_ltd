@@ -30,11 +30,11 @@
 
 ## Featured Work & Categories
 
-Showcasing 229 original artworks across 15 curated categories:
+Showcasing 229 original artworks across 10 curated categories:
 
-- Character Art: Conceptual character design, reference turnaround sheets, full-body renders, and expressive line art.
+- Character Art: Character illustration (conceptual design, reference turnarounds, full-body renders, sketches, and anthro art).
 - Comics & Storytelling: Comic MLP (episodic sequential storytelling, narrative scenes, continuing lore, and pony art), and manga action spreads.
-- Branding & Identity: Esports mascot marks, creator avatars (PFPs), wide-format headers, emotes, and tattoo flash.
+- Branding & Identity: Branding (mascot marks, emblems, tattoo flash), creator avatars (PFPs), wide-format headers, and emotes.
 - Client Showcases: Bespoke private commission packages, multi-character scenes, and custom digital lore.
 - Motion & Animation: Hand-crafted 2D animated shorts, looping sequences, and stream alerts.
 - Illustration: Whimsical double-page picture book spreads, illustrated character sheets, and children's book art.
