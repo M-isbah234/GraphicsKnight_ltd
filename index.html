@@ -955,6 +955,7 @@ html.globe .tile.hot button{box-shadow:0 0 0 3px rgba(255,248,239,.95),0 0 0 4.5
 
 .cgrid.globe .citem .ci .mono{display:none}.cgrid.globe .citem .ci{padding:26px 10px 8px}@media (max-width:760px){.cgrid.globe .citem .ci b{font-size:11.5px}}
 html.globe .tile.dim{filter:none}
+html.globe .cycle-clone{display:none!important}
 .tile.dim .inner{transition:opacity .5s}
 
 /* ================= category stage ================= */
@@ -2688,7 +2689,7 @@ function tiltStep(){tiltRaf=0;let busy=false;TILT.forEach((t,btn)=>{t.x+=(t.tx-t
   const done=Math.abs(t.tx-t.x)+Math.abs(t.ty-t.y)+Math.abs(t.ts-t.s)<.002;if(done){t.x=t.tx;t.y=t.ty;t.s=t.ts}
   btn.style.transform=(t.x===0&&t.y===0&&t.s===1)?"":`perspective(800px) rotateX(${(-t.y*9).toFixed(2)}deg) rotateY(${(t.x*9).toFixed(2)}deg) scale(${t.s.toFixed(4)})`;
   if(done&&t.x===0&&t.y===0&&t.s===1)TILT.delete(btn);else if(!done)busy=true});if(busy)tiltRaf=requestAnimationFrame(tiltStep)}
-const CYCLE_COUNT = 2;
+const CYCLE_COUNT = 3;
 for (let c = 0; c < CYCLE_COUNT; c++) {
   K.forEach((k, i) => {
     const tileIdx = c * K.length + i;
@@ -2723,85 +2724,69 @@ function layout(){
   if(!winW || !winH || winW <= 0 || winH <= 0) return;
   W=winW;H=winH;gridT=null;const ft=document.getElementById("foot");footTop=ft?ft.getBoundingClientRect().top:H-150;
   const mob=W<760,tab=!mob&&W<1100;
-  const gapY=48; // minimum 0.5-inch distance (48px at 96 DPI)
-  const baseW=mob?Math.min(160,Math.max(130,Math.floor((W-32-gapY)/2))):tab?Math.min(210,Math.max(160,Math.floor((W-4*gapY)/3))):Math.min(225,Math.max(180,Math.floor((W-4*gapY)/3)));
-  /* phones get a calibrated field with strict 0.5-inch spacing to prevent title occlusion */
-  PW=mob?Math.max(W*2.05,760):tab?Math.max(W*1.75,1150):Math.max(W*1.5,1380);
-  PH=mob?Math.max(H+1000,Math.max(H*2.0,1800)):tab?Math.max(H+1200,Math.max(H*2.2,2100)):Math.max(H+1400,Math.max(H*2.3,2400));
+  const gapX=(mob&&W<350)?Math.max(24,W-32-2*110):96; // 1-inch horizontal gap (96px at 96 DPI)
+  const gapY=48; // 0.5-inch vertical gap (48px at 96 DPI)
+  const baseW=mob?Math.min(150,Math.max(110,Math.floor((W-32-gapX)/2))):tab?Math.min(220,Math.max(165,Math.floor((W-48-2*gapX)/3))):Math.min(235,Math.max(185,Math.floor((W-48-3*gapX)/4)));
+  PW=mob?Math.max(W*1.5,760):tab?Math.max(W*1.4,1150):Math.max(W*1.3,1400);
   tiles.forEach(t=>{if(gridMode){t.el.style.width=t.el.style.height=t.el.style.zIndex="";return}t.size=baseW;t.el.style.width=t.size+"px";t.el.style.height="";t.el.style.zIndex=Math.round(t.depth*100)});
-  /* every card occupies its own separate space with minimum 0.5-inch clearance;
+  /* every card occupies its own separate space with strictly 1-inch horizontal clearance and 0.5-inch vertical clearance;
      vertical conveyor repeats continuously with seamless 48px spacing across wrap boundaries */
   if(!gridMode){
-    const NUM_ROWS = mob ? 10 : 8;
-    const row_map = mob ? [
-      [0, 1], [2, 3], [4, 5], [6, 7], [8, 9],
-      [10, 11], [12, 13], [14, 15], [16, 17], [18, 19]
-    ] : [
-      [9, 8],          // Row 0: Child Book, 2D Animation
-      [0, 1, 2],       // Row 1: Character illustration, Comic MLP, Manga Art
-      [3, 5],          // Row 2: Most Valuable Client, Branding
-      [4, 6, 7],       // Row 3: PFP, Banners & Headers, Emotes & Badges
-      [19, 18],        // Row 4: Child Book, 2D Animation (Cycle 2)
-      [10, 11, 12],    // Row 5: Character illustration, Comic MLP, Manga Art (Cycle 2)
-      [13, 15],        // Row 6: Most Valuable Client, Branding (Cycle 2)
-      [14, 16, 17]     // Row 7: PFP, Banners & Headers, Emotes & Badges (Cycle 2)
-    ];
+    const row_pattern=mob?[2,2,2,2,2]:tab?[3,2,3,2]:[3,4,3];
+    const row_map=[];
+    for(let c=0;c<CYCLE_COUNT;c++){
+      let offset=c*K.length;
+      for(const count of row_pattern){
+        const row=[];
+        for(let k=0;k<count;k++)row.push(offset+k);
+        offset+=count;
+        row_map.push(row);
+      }
+    }
+    const NUM_ROWS=row_map.length;
 
     tiles.forEach(t=>{
-      t.hh = t.el.offsetHeight || Math.round(t.size * t.rr + 58);
+      t.hh=t.el.offsetHeight||Math.round(t.size*t.rr+58);
     });
 
-    const rowHeights = [];
-    for(let r = 0; r < NUM_ROWS; r++){
-      const cards = row_map[r];
-      let maxH = 0;
+    const rowHeights=[];
+    for(let r=0;r<NUM_ROWS;r++){
+      const cards=row_map[r];
+      let maxH=0;
       for(let idx of cards){
-        if(tiles[idx] && tiles[idx].hh > maxH) maxH = tiles[idx].hh;
+        if(tiles[idx]&&tiles[idx].hh>maxH)maxH=tiles[idx].hh;
       }
-      rowHeights.push(maxH || 200);
+      rowHeights.push(maxH||200);
     }
 
-    const startY = tab ? 96 : (mob ? 84 : 100);
-    const rowY = [];
-    let curY = startY;
-    for(let r = 0; r < NUM_ROWS; r++){
+    const startY=tab?96:(mob?84:100);
+    const rowY=[];
+    let curY=startY;
+    for(let r=0;r<NUM_ROWS;r++){
       rowY.push(curY);
-      curY += rowHeights[r] + gapY;
+      curY+=rowHeights[r]+gapY;
     }
 
-    const botLast = rowY[NUM_ROWS - 1] + rowHeights[NUM_ROWS - 1];
-    PH = (botLast - startY) + gapY;
+    const botLast=rowY[NUM_ROWS-1]+rowHeights[NUM_ROWS-1];
+    PH=(botLast-startY)+gapY;
 
-    for(let r = 0; r < NUM_ROWS; r++){
-      const cards = row_map[r];
-      const rY = rowY[r];
-      const rH = rowHeights[r];
-      const cy = rY + rH / 2;
+    for(let r=0;r<NUM_ROWS;r++){
+      const cards=row_map[r];
+      const rH=rowHeights[r];
+      const cy=rowY[r]+rH/2;
+      const C=cards.length;
+      const rowWidth=C*baseW+(C-1)*gapX;
+      const startX=(W-rowWidth)/2+baseW/2;
 
-      if(mob){
-        const cx0 = 16 + baseW / 2;
-        const cx1 = W - 16 - baseW / 2;
-        if(tiles[cards[0]]) tiles[cards[0]].cx = cx0;
-        if(tiles[cards[1]]) tiles[cards[1]].cx = cx1;
-      } else if(cards.length === 2){
-        const span2 = Math.min(W * 0.44, 560);
-        if(tiles[cards[0]]) tiles[cards[0]].cx = W * 0.5 - span2 * 0.5;
-        if(tiles[cards[1]]) tiles[cards[1]].cx = W * 0.5 + span2 * 0.5;
-      } else {
-        const span3 = Math.min(W * 0.68, 860);
-        if(tiles[cards[0]]) tiles[cards[0]].cx = W * 0.5 - span3 * 0.5;
-        if(tiles[cards[1]]) tiles[cards[1]].cx = W * 0.5;
-        if(tiles[cards[2]]) tiles[cards[2]].cx = W * 0.5 + span3 * 0.5;
-      }
-
-      for(let idx of cards){
-        const t = tiles[idx];
-        if(!t) continue;
-        t.cy = cy;
-        const x0 = t.cx - t.size / 2;
-        const y0 = cy - t.hh / 2;
-        t.ux = (x0 + (PW - W) / 2) / PW;
-        t.uy = (y0 + (PH - H) / 2) / PH;
+      for(let k=0;k<C;k++){
+        const t=tiles[cards[k]];
+        if(!t)continue;
+        t.cx=startX+k*(baseW+gapX);
+        t.cy=cy;
+        const x0=t.cx-t.size/2;
+        const y0=cy-t.hh/2;
+        t.ux=(x0+(PW-W)/2)/PW;
+        t.uy=(y0+(PH-H)/2)/PH;
       }
     }
   }
