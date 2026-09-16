@@ -2688,26 +2688,36 @@ function tiltStep(){tiltRaf=0;let busy=false;TILT.forEach((t,btn)=>{t.x+=(t.tx-t
   const done=Math.abs(t.tx-t.x)+Math.abs(t.ty-t.y)+Math.abs(t.ts-t.s)<.002;if(done){t.x=t.tx;t.y=t.ty;t.s=t.ts}
   btn.style.transform=(t.x===0&&t.y===0&&t.s===1)?"":`perspective(800px) rotateX(${(-t.y*9).toFixed(2)}deg) rotateY(${(t.x*9).toFixed(2)}deg) scale(${t.s.toFixed(4)})`;
   if(done&&t.x===0&&t.y===0&&t.s===1)TILT.delete(btn);else if(!done)busy=true});if(busy)tiltRaf=requestAnimationFrame(tiltStep)}
-const COLS=4,ROWS=Math.ceil(K.length/COLS);
-K.forEach((k,i)=>{
-  const el=document.createElement("div");el.className="tile kcard";
-  const inner=document.createElement("div");inner.className="inner";inner.style.setProperty("--d",(.15+((i*7)%K.length)*.06).toFixed(2)+"s");
-  const btn=document.createElement("button");btn.type="button";btn.setAttribute("aria-label",`${k.name}, ${k.items.length} projects. Open category`);
-  /* the card takes the cover's own shape (within limits) and the whole image is shown, never cropped */
-  const ir=(k.cv&&k.cv.ih&&k.cv.iw)?(k.cv.ih/k.cv.iw):0.6,rr=Math.max(0.45,Math.min(1.50,ir));
-  btn.innerHTML=`<span class="kimg" style="aspect-ratio:${(1/rr).toFixed(4)};"><img src="${TH(k.cv)}" alt="" decoding="async" draggable="false"></span><span class="kc"><span class="kg mono">${esc(LONG[k.f])}</span><b>${esc(k.name)}</b><span class="kn mono">${pad2(k.items.length)} projects <em>→</em></span></span>`;
-  inner.append(btn);el.append(inner);field.append(el);
-  const depth=.62+rand(i,3)*.5;
-  const sl=SLOTS[i];tiles.push({el,btn,p:k,i,rr,depth,ox:0,oy:0,fx:0,fy:0,ux:(sl%COLS)/COLS+rand(i,1)*.08,uy:Math.floor(sl/COLS)/ROWS+rand(i,2)*.08,size:0});
-  btn.addEventListener("mouseenter",()=>{setHot(i,true);curState("view");gHover=true});
-  btn.addEventListener("mouseleave",()=>{gHover=false;tiltTo(btn,0,0,1);curState(dragging?"grab":"drag")});
-  btn.addEventListener("focus",()=>setHot(i,true));
-  if(fine&&!reduce)btn.addEventListener("pointermove",e=>{
-    if(dragging||held)return;const r=btn.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
-    tiltTo(btn,x,y,1.04);
+const CYCLE_COUNT = 2;
+for (let c = 0; c < CYCLE_COUNT; c++) {
+  K.forEach((k, i) => {
+    const tileIdx = c * K.length + i;
+    const el = document.createElement("div"); el.className = "tile kcard";
+    if (c > 0) el.classList.add("cycle-clone");
+    const inner = document.createElement("div"); inner.className = "inner";
+    inner.style.setProperty("--d", (.15 + ((i * 7) % K.length) * .06).toFixed(2) + "s");
+    const btn = document.createElement("button"); btn.type = "button";
+    btn.setAttribute("aria-label", `${k.name}, ${k.items.length} projects. Open category`);
+    /* the card takes the cover's own shape (within limits) and the whole image is shown, never cropped */
+    const ir = (k.cv && k.cv.ih && k.cv.iw) ? (k.cv.ih / k.cv.iw) : 0.6, rr = Math.max(0.45, Math.min(1.50, ir));
+    btn.innerHTML = `<span class="kimg" style="aspect-ratio:${(1 / rr).toFixed(4)};"><img src="${TH(k.cv)}" alt="" decoding="async" draggable="false"></span><span class="kc"><span class="kg mono">${esc(LONG[k.f])}</span><b>${esc(k.name)}</b><span class="kn mono">${pad2(k.items.length)} projects <em>→</em></span></span>`;
+    inner.append(btn); el.append(inner); field.append(el);
+    const depth = .75 + rand(i, 3) * .35;
+    tiles.push({
+      el, btn, p: k, i: tileIdx, vi: i, cycle: c, isPrimary: c === 0,
+      rr, depth, ox: 0, oy: 0, fx: 0, fy: 0, ux: 0, uy: 0, size: 0
+    });
+    btn.addEventListener("mouseenter", () => { setHot(i, true); curState("view"); gHover = true; });
+    btn.addEventListener("mouseleave", () => { gHover = false; tiltTo(btn, 0, 0, 1); curState(dragging ? "grab" : "drag"); });
+    btn.addEventListener("focus", () => setHot(i, true));
+    if (fine && !reduce) btn.addEventListener("pointermove", e => {
+      if (dragging || held) return;
+      const r = btn.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      tiltTo(btn, x, y, 1.04);
+    });
+    btn.addEventListener("click", e => { if (moved > 6) { e.preventDefault(); return; } location.hash = "c-" + k.key; });
   });
-  btn.addEventListener("click",e=>{if(moved>6){e.preventDefault();return}location.hash="c-"+k.key});
-});
+}
 function layout(){
   const winW = window.innerWidth, winH = window.innerHeight;
   if(!winW || !winH || winW <= 0 || winH <= 0) return;
@@ -2954,7 +2964,9 @@ const nowLabel=document.getElementById("nowLabel"),nowSub=document.getElementByI
 function flip(el,txt){if(el.textContent===txt)return;el.textContent=txt;if(!reduce&&el.animate)el.animate([{opacity:0,transform:"translateY(10px)"},{opacity:1,transform:"none"}],{duration:420,easing:"cubic-bezier(.16,1,.3,1)"})}
 let hotT=0;
 function setHot(i,recolor){
-  if(tiles[hot])tiles[hot].el.classList.remove("hot");tiles[i].el.classList.add("hot");hot=i;
+  if(tiles[hot])tiles[hot].el.classList.remove("hot");
+  tiles.forEach(t=>{if(t.vi===i)t.el.classList.add("hot");else t.el.classList.remove("hot")});
+  hot=i;
   clearTimeout(hotT);
   const k=K[i];const apply=()=>{flip(nowLabel,k.name);flip(nowSub,k.intro);if(recolor&&!sheetOpen()&&activeFilter==="All"){if(fine){clearTimeout(setHot._t);setHot._t=setTimeout(()=>{if(!sheetOpen())theme(k.bg)},110)}else{if(pendingBg!==k.bg)pendT=performance.now();pendingBg=k.bg}}};
   /* a short settle delay: skimming across tiles no longer flickers the page color */
@@ -3020,10 +3032,21 @@ function applySub(s){activeSub=s;markMenus();updateTiles()}
 function markMenus(){const cur=(location.hash.match(/^#c-(.+)/)||[])[1];fwrap.querySelectorAll(".mi").forEach(it=>it.setAttribute("aria-checked",it.dataset.key&&it.dataset.key===cur?"true":"false"))}
 function updateTiles(){
   const f=activeFilter;let first=-1,n=0;document.body.classList.toggle("filtering",f!=="All");
-  tiles.forEach(t=>{const on=f==="All"||t.p.f===f;t.el.classList.toggle("dim",!on);t.btn.tabIndex=on?0:-1;if(on){t.vi=n;n++;if(first<0)first=t.i}});VN=n;gridT=null;if(f==="All"&&updateTiles._was&&updateTiles._was!=="All")requestAnimationFrame(()=>{layout()});updateTiles._was=f;
+  tiles.forEach(t=>{
+    const on=f==="All"||t.p.f===f;
+    t.el.classList.toggle("dim",!on);
+    t.btn.tabIndex=on?0:-1;
+    if(t.cycle===0&&on){
+      t.vi=n;n++;
+      if(first<0)first=t.i;
+    }
+  });
+  VN=n;gridT=null;
+  if(f==="All"&&updateTiles._was&&updateTiles._was!=="All")requestAnimationFrame(()=>{layout()});
+  updateTiles._was=f;
   emptyEl.classList.toggle("on",n===0);
   hint.textContent=f==="All"?`${K.length} categories · ${P.length} projects`:`${LONG[f]} · ${n} categories · ${P.filter(p=>p.f===f).length} projects`;
-  if(first>=0&&tiles[hot].el.classList.contains("dim"))setHot(first,false);
+  if(first>=0&&tiles[hot]&&tiles[hot].el.classList.contains("dim"))setHot(first,false);
 }
 function visible(){return tiles.filter(t=>!t.el.classList.contains("dim")).map(t=>t.i)}
 
