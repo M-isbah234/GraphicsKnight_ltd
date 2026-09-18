@@ -2729,56 +2729,81 @@ function layout(){
   PW=mob?Math.max(W*2.05,760):tab?Math.max(W*1.75,1150):Math.max(W*1.5,1380);
   PH=mob?Math.max(H+1000,Math.max(H*2.0,1800)):tab?Math.max(H+1200,Math.max(H*2.2,2100)):Math.max(H+1400,Math.max(H*2.3,2400));
   tiles.forEach(t=>{if(gridMode){t.el.style.width=t.el.style.height=t.el.style.zIndex="";return}t.size=baseW;t.el.style.width=t.size+"px";t.el.style.height="";t.el.style.zIndex=Math.round(t.depth*100)});
-  /* every card owns one cell of a curated grid and moves with the field as one sheet, so cards never slide over
-     each other and every title stays readable; precisely aligned on screen at launch */
+  /* every card occupies its own separate space with minimum 0.5-inch clearance;
+     vertical conveyor repeats continuously with seamless 48px spacing across wrap boundaries */
   if(!gridMode){
-    const topY = tab ? 96 : (mob ? 84 : 112);
-    const botY = (footTop > 200 ? footTop : H - 120) - (mob ? 12 : 20);
-    const availH = Math.max(300, botY - topY);
-    const r0_y = topY + availH * 0.16;
-    const r1_y = topY + availH * 0.50;
-    const r2_y = topY + availH * 0.84;
-    const gap3 = Math.min(W * 0.28, 400);
-    const gap4 = Math.min(W * 0.23, 330);
-    
-    // Curated 3-4-3 alignment across viewport:
-    // Row 0: Child Book (9), 2D Animation (8), Manga Art (2)
-    // Row 1: Character illustration (0), Comic MLP (1), Most Valuable Client (3), Branding (5)
-    // Row 2: PFP (4), Banners & Headers (6), Emotes & Badges (7)
-    const POS_10 = [
-      {cx: W * 0.5 - 1.5 * gap4, cy: r1_y}, // 0: Character illustration
-      {cx: W * 0.5 - 0.5 * gap4, cy: r1_y}, // 1: Comic MLP
-      {cx: W * 0.5 + gap3,        cy: r0_y}, // 2: Manga Art
-      {cx: W * 0.5 + 0.5 * gap4, cy: r1_y}, // 3: Most Valuable Client
-      {cx: W * 0.5 - gap3 + 24,   cy: r2_y}, // 4: PFP (Profile Picture)
-      {cx: W * 0.5 + 1.5 * gap4, cy: r1_y}, // 5: Branding
-      {cx: W * 0.5 + 24,          cy: r2_y}, // 6: Banners & Headers
-      {cx: W * 0.5 + gap3 + 24,   cy: r2_y}, // 7: Emotes & Badges
-      {cx: W * 0.5,               cy: r0_y}, // 8: 2D Animation
-      {cx: W * 0.5 - gap3,        cy: r0_y}  // 9: Child Book Illustration
+    const NUM_ROWS = mob ? 10 : 8;
+    const row_map = mob ? [
+      [0, 1], [2, 3], [4, 5], [6, 7], [8, 9],
+      [10, 11], [12, 13], [14, 15], [16, 17], [18, 19]
+    ] : [
+      [9, 8],          // Row 0: Child Book, 2D Animation
+      [0, 1, 2],       // Row 1: Character illustration, Comic MLP, Manga Art
+      [3, 5],          // Row 2: Most Valuable Client, Branding
+      [4, 6, 7],       // Row 3: PFP, Banners & Headers, Emotes & Badges
+      [19, 18],        // Row 4: Child Book, 2D Animation (Cycle 2)
+      [10, 11, 12],    // Row 5: Character illustration, Comic MLP, Manga Art (Cycle 2)
+      [13, 15],        // Row 6: Most Valuable Client, Branding (Cycle 2)
+      [14, 16, 17]     // Row 7: PFP, Banners & Headers, Emotes & Badges (Cycle 2)
     ];
 
     tiles.forEach(t=>{
-      let hh = t.el.offsetHeight || t.size * t.rr + 60;
-      t.hh = hh;
-      let cx, cy;
-      if (mob) {
-        const row = Math.floor(t.i / 2), col = t.i % 2;
-        cx = col === 0 ? W * 0.28 : W * 0.72;
-        cy = topY + availH * ((row + 0.5) / 5);
-      } else if (POS_10[t.i]) {
-        cx = POS_10[t.i].cx;
-        cy = POS_10[t.i].cy;
-      } else {
-        const col = t.i % 4, row = Math.floor(t.i / 4);
-        cx = W * 0.5 + (col - 1.5) * gap4;
-        cy = topY + availH * ((row + 0.5) / 3);
-      }
-      const x0 = cx - t.size / 2;
-      const y0 = cy - hh / 2;
-      t.ux = (x0 + (PW - W) / 2) / PW;
-      t.uy = (y0 + (PH - H) / 2) / PH;
+      t.hh = t.el.offsetHeight || Math.round(t.size * t.rr + 58);
     });
+
+    const rowHeights = [];
+    for(let r = 0; r < NUM_ROWS; r++){
+      const cards = row_map[r];
+      let maxH = 0;
+      for(let idx of cards){
+        if(tiles[idx] && tiles[idx].hh > maxH) maxH = tiles[idx].hh;
+      }
+      rowHeights.push(maxH || 200);
+    }
+
+    const startY = tab ? 96 : (mob ? 84 : 100);
+    const rowY = [];
+    let curY = startY;
+    for(let r = 0; r < NUM_ROWS; r++){
+      rowY.push(curY);
+      curY += rowHeights[r] + gapY;
+    }
+
+    const botLast = rowY[NUM_ROWS - 1] + rowHeights[NUM_ROWS - 1];
+    PH = (botLast - startY) + gapY;
+
+    for(let r = 0; r < NUM_ROWS; r++){
+      const cards = row_map[r];
+      const rY = rowY[r];
+      const rH = rowHeights[r];
+      const cy = rY + rH / 2;
+
+      if(mob){
+        const cx0 = 16 + baseW / 2;
+        const cx1 = W - 16 - baseW / 2;
+        if(tiles[cards[0]]) tiles[cards[0]].cx = cx0;
+        if(tiles[cards[1]]) tiles[cards[1]].cx = cx1;
+      } else if(cards.length === 2){
+        const span2 = Math.min(W * 0.44, 560);
+        if(tiles[cards[0]]) tiles[cards[0]].cx = W * 0.5 - span2 * 0.5;
+        if(tiles[cards[1]]) tiles[cards[1]].cx = W * 0.5 + span2 * 0.5;
+      } else {
+        const span3 = Math.min(W * 0.68, 860);
+        if(tiles[cards[0]]) tiles[cards[0]].cx = W * 0.5 - span3 * 0.5;
+        if(tiles[cards[1]]) tiles[cards[1]].cx = W * 0.5;
+        if(tiles[cards[2]]) tiles[cards[2]].cx = W * 0.5 + span3 * 0.5;
+      }
+
+      for(let idx of cards){
+        const t = tiles[idx];
+        if(!t) continue;
+        t.cy = cy;
+        const x0 = t.cx - t.size / 2;
+        const y0 = cy - t.hh / 2;
+        t.ux = (x0 + (PW - W) / 2) / PW;
+        t.uy = (y0 + (PH - H) / 2) / PH;
+      }
+    }
   }
 }
 let px=0,py=0,vx=0,vy=0,moved=0,dragging=false,lx=0,ly=0;
