@@ -1318,10 +1318,74 @@ body.filtering .tile.dim{opacity:.035!important}
   #filters .chev{width:18px;height:18px;margin-right:2px}
 }
 
-/* ================= centered, content-sized bottom bar ================= */
-@media (min-width:1101px){
-  #foot{left:0;right:0;margin:0 auto;width:max-content;max-width:calc(100% - 24px);grid-template-columns:clamp(240px,22vw,330px) auto;gap:24px;padding:10px 12px 10px 22px}
-  #now{min-width:0}
+/* ================= reduced bottom bar (details only, category filter strip removed) ================= */
+#filters{display:none!important}
+#foot{
+  left:0!important;
+  right:0!important;
+  margin:0 auto!important;
+  width:-webkit-fit-content!important;
+  width:-moz-fit-content!important;
+  width:fit-content!important;
+  max-width:min(480px,calc(100vw - 32px))!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:3px!important;
+  grid-template-columns:none!important;
+  padding:12px 22px!important;
+  border-radius:20px!important;
+  bottom:calc(22px + env(safe-area-inset-bottom,0px))!important;
+  box-sizing:border-box!important;
+  text-align:left!important;
+  pointer-events:auto!important;
+}
+#now{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:3px!important;
+  min-width:0!important;
+  width:100%!important;
+}
+#now .label{
+  font-family:var(--f-serif)!important;
+  font-size:clamp(19px,1.7vw,24px)!important;
+  font-weight:700!important;
+  line-height:1.15!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+#now .sub{
+  font-size:13.5px!important;
+  color:var(--soft)!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  display:block!important;
+  line-height:1.35!important;
+}
+#now .hint{
+  font-family:var(--f-mono)!important;
+  font-size:10.5px!important;
+  letter-spacing:.08em!important;
+  text-transform:uppercase!important;
+  color:var(--soft)!important;
+  margin-top:3px!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  display:block!important;
+}
+@media (max-width:760px){
+  #foot{
+    bottom:calc(14px + env(safe-area-inset-bottom,0px))!important;
+    padding:10px 16px!important;
+    border-radius:16px!important;
+    max-width:calc(100vw - 20px)!important;
+  }
+  #now .label{font-size:17.5px!important}
+  #now .sub{font-size:12px!important;display:block!important}
+  #now .hint{font-size:10px!important;display:block!important}
 }
 
 /* ================= logo suite ================= */
