@@ -30,10 +30,10 @@
 
 ## Featured Work & Categories
 
-Showcasing 229 original artworks across 21 curated categories:
+Showcasing 229 original artworks across 15 curated categories:
 
 - Character Art: Conceptual character design, reference turnaround sheets, full-body renders, and expressive line art.
-- Comics & Storytelling: Episodic sequential storytelling, manga action spreads, panel inking, and narrative lore scenes.
+- Comics & Storytelling: Comic MLP (episodic sequential storytelling, narrative scenes, continuing lore, and pony art), and manga action spreads.
 - Branding & Identity: Esports mascot marks, creator avatars (PFPs), wide-format headers, emotes, and tattoo flash.
 - Client Showcases: Bespoke private commission packages, multi-character scenes, and custom digital lore.
 - Motion & Animation: Hand-crafted 2D animated shorts, looping sequences, and stream alerts.
