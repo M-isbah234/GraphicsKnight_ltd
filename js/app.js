@@ -1019,3 +1019,5 @@ else{
 }
 function sessionStorageGet(){try{return (sessionStorage.getItem("sa-intro")||sessionStorage.getItem("mf-intro"))==="1"}catch(e){return false}}
 })();
+
+/* 2D Animation high-resolution video player embed support enabled */
