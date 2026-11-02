@@ -1,0 +1,19 @@
+{
+  "name": "graphics-knight-portfolio",
+  "version": "1.0.0",
+  "description": "Pixel-perfect interactive portfolio for Graphics Knight LTD. \u2014 2D/3D Artist & Animator featuring dynamic background palette shifting, 2D drifting physics field, Web Audio procedural sound design, custom cursor, category filters, and interactive slide-out modals.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "download": "node scripts/download_assets.js"
+  },
+  "keywords": [
+    "portfolio",
+    "creative-developer",
+    "infinite-scroll",
+    "web-audio",
+    "interactive-field"
+  ],
+  "author": "",
+  "license": "ISC"
+}
