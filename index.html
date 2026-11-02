@@ -1577,6 +1577,107 @@ body.filtering .tile.dim{opacity:.035!important}
   max-width: none!important;
 }
 
+/* Category Cards - Natural Aspect Ratio & Perfect Fit */
+.kcard,
+.tile.kcard {
+  overflow: visible!important;
+  height: auto!important;
+}
+
+.kcard .inner,
+.tile.kcard .inner {
+  border-radius: 18px!important;
+  overflow: hidden!important;
+  height: auto!important;
+}
+
+.kcard button {
+  position: relative!important;
+  display: flex!important;
+  flex-direction: column!important;
+  width: 100%!important;
+  height: auto!important;
+  border-radius: 18px!important;
+  overflow: hidden!important;
+  background: #151311!important;
+  border: 1px solid rgba(255, 255, 255, 0.16)!important;
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.65)!important;
+  padding: 0!important;
+}
+
+.kcard .kimg {
+  position: relative!important;
+  display: block!important;
+  width: 100%!important;
+  height: auto!important;
+  overflow: hidden!important;
+  background: transparent!important;
+  margin: 0!important;
+  padding: 0!important;
+}
+
+.kcard .kimg img {
+  position: absolute!important;
+  inset: 0!important;
+  width: 100%!important;
+  height: 100%!important;
+  object-fit: cover!important;
+  object-position: center center!important;
+  display: block!important;
+  background: transparent!important;
+  border: none!important;
+  margin: 0!important;
+  padding: 0!important;
+  transform: none!important;
+}
+
+.kcard button:hover .kimg img {
+  transform: scale(1.04)!important;
+  transition: transform 1.2s cubic-bezier(.16, 1, .3, 1)!important;
+}
+
+/* Category bottom text container matching original Shifa layout */
+.kcard .kc {
+  position: relative!important;
+  inset: auto!important;
+  width: 100%!important;
+  padding: 10px 14px 12px!important;
+  background: #14110d!important;
+  border-top: 1px solid rgba(255, 255, 255, 0.15)!important;
+  box-sizing: border-box!important;
+  display: flex!important;
+  flex-direction: column!important;
+  gap: 3px!important;
+}
+
+/* Category Grid Items in Drawer */
+.citem {
+  border-radius: 14px!important;
+  overflow: hidden!important;
+  background: transparent!important;
+}
+
+.citem img {
+  width: 100%!important;
+  height: auto!important;
+  display: block!important;
+  object-fit: cover!important;
+}
+
+/* Category hover tooltip preview */
+.pv {
+  border-radius: 14px!important;
+  overflow: hidden!important;
+  background: transparent!important;
+}
+
+.pv img {
+  width: 100%!important;
+  height: 100%!important;
+  display: block!important;
+  object-fit: cover!important;
+}
+
 </style>
 </head>
 <body>
@@ -2167,8 +2268,8 @@ K.forEach((k,i)=>{
   const inner=document.createElement("div");inner.className="inner";inner.style.setProperty("--d",(.15+((i*7)%K.length)*.06).toFixed(2)+"s");
   const btn=document.createElement("button");btn.type="button";btn.setAttribute("aria-label",`${k.name}, ${k.items.length} projects. Open category`);
   /* the card takes the cover's own shape (within limits) and the whole image is shown, never cropped */
-  const ir=k.cv.ih/k.cv.iw,rr=Math.max(.62,Math.min(1.35,ir));
-  btn.innerHTML=`<span class="kimg"><img src="${TH(k.cv)}" alt="" decoding="async" draggable="false"></span><span class="kc"><span class="kg mono">${esc(LONG[k.f])}</span><b>${esc(k.name)}</b><span class="kn mono">${pad2(k.items.length)} projects <em>→</em></span></span>`;
+  const ir=(k.cv&&k.cv.ih&&k.cv.iw)?(k.cv.ih/k.cv.iw):0.6,rr=Math.max(0.45,Math.min(1.50,ir));
+  btn.innerHTML=`<span class="kimg" style="aspect-ratio:${(1/rr).toFixed(4)};"><img src="${TH(k.cv)}" alt="" decoding="async" draggable="false"></span><span class="kc"><span class="kg mono">${esc(LONG[k.f])}</span><b>${esc(k.name)}</b><span class="kn mono">${pad2(k.items.length)} projects <em>→</em></span></span>`;
   inner.append(btn);el.append(inner);field.append(el);
   const depth=.62+rand(i,3)*.5;
   const sl=SLOTS[i];tiles.push({el,btn,p:k,i,rr,depth,ox:0,oy:0,fx:0,fy:0,ux:(sl%COLS)/COLS+rand(i,1)*.08,uy:Math.floor(sl/COLS)/ROWS+rand(i,2)*.08,size:0});

@@ -394,8 +394,8 @@ K.forEach((k,i)=>{
   const inner=document.createElement("div");inner.className="inner";inner.style.setProperty("--d",(.15+((i*7)%K.length)*.06).toFixed(2)+"s");
   const btn=document.createElement("button");btn.type="button";btn.setAttribute("aria-label",`${k.name}, ${k.items.length} projects. Open category`);
   /* the card takes the cover's own shape (within limits) and the whole image is shown, never cropped */
-  const ir=k.cv.ih/k.cv.iw,rr=Math.max(.62,Math.min(1.35,ir));
-  btn.innerHTML=`<span class="kimg"><img src="${TH(k.cv)}" alt="" decoding="async" draggable="false"></span><span class="kc"><span class="kg mono">${esc(LONG[k.f])}</span><b>${esc(k.name)}</b><span class="kn mono">${pad2(k.items.length)} projects <em>→</em></span></span>`;
+  const ir=(k.cv&&k.cv.ih&&k.cv.iw)?(k.cv.ih/k.cv.iw):0.6,rr=Math.max(0.45,Math.min(1.50,ir));
+  btn.innerHTML=`<span class="kimg" style="aspect-ratio:${(1/rr).toFixed(4)};"><img src="${TH(k.cv)}" alt="" decoding="async" draggable="false"></span><span class="kc"><span class="kg mono">${esc(LONG[k.f])}</span><b>${esc(k.name)}</b><span class="kn mono">${pad2(k.items.length)} projects <em>→</em></span></span>`;
   inner.append(btn);el.append(inner);field.append(el);
   const depth=.62+rand(i,3)*.5;
   const sl=SLOTS[i];tiles.push({el,btn,p:k,i,rr,depth,ox:0,oy:0,fx:0,fy:0,ux:(sl%COLS)/COLS+rand(i,1)*.08,uy:Math.floor(sl/COLS)/ROWS+rand(i,2)*.08,size:0});
@@ -1019,5 +1019,3 @@ else{
 }
 function sessionStorageGet(){try{return (sessionStorage.getItem("sa-intro")||sessionStorage.getItem("mf-intro"))==="1"}catch(e){return false}}
 })();
-
-/* 2D Animation high-resolution video player embed support enabled */
