@@ -694,7 +694,7 @@ const chips=document.getElementById("chips"),bMsg=document.getElementById("bMsg"
 chips.innerHTML=NEEDS.map(n=>`<button type="button" aria-pressed="false">${n}</button>`).join("");
 chips.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;b.setAttribute("aria-pressed",b.getAttribute("aria-pressed")==="true"?"false":"true")});
 function briefText(){const picked=[...chips.querySelectorAll('[aria-pressed="true"]')].map(b=>b.textContent);return `Hi Graphics Knight,\n\n${bMsg.value.trim()||"Here's what I'm working on:"}\n\n${picked.length?"I need help with: "+picked.join(", ")+"\n\n":""}Looking forward to working together.`}
-bCopy.addEventListener("click",()=>{const t=briefText();const ok=()=>{bOut.textContent="Copied. Paste it into your Upwork message.";};const fail=()=>{bMsg.value=t;bMsg.select();bOut.textContent="Selected. Press copy on your keyboard."};try{navigator.clipboard.writeText(t).then(ok,fail)}catch(e){fail()}});
+bCopy.addEventListener("click",()=>{const t=briefText();const ok=()=>{bOut.textContent="Copied. Paste it into your Behance message.";};const fail=()=>{bMsg.value=t;bMsg.select();bOut.textContent="Selected. Press copy on your keyboard."};try{navigator.clipboard.writeText(t).then(ok,fail)}catch(e){fail()}});
 
 /* ---------- reveals ---------- */
 function splitWords(el){
@@ -811,7 +811,7 @@ function route(){
   }
   if(h==="work"&&prev&&prev.startsWith("c-")&&KBY[prev.slice(2)]&&!GLOBE){const ki=K.indexOf(KBY[prev.slice(2)]);const t=tiles.find(x=>x.i===ki);if(t){if(activeFilter!=="All")applyFilter("All",false);setHot(ki,false);panTo(t)}}
   if(!/^[pc]-/.test(h))document.title="Graphics Knight LTD. — 2D/3D Artist & Animator";
-  {const PG={about:["About","Hi, I\u2019m Graphics Knight LTD., a creative designer."],services:["Services","Everything people see before they ever meet you."],process:["Process","How a project goes, from questions to files."],contact:["Contact","Let\u2019s start your project on Upwork."]};if(PG[h]){flip(nowLabel,PG[h][0]);flip(nowSub,PG[h][1])}else if(!open&&prev&&/^(p-|about|services|process|contact)/.test(prev)){const k=K[hot];if(k){flip(nowLabel,k.name);flip(nowSub,k.intro)}}}
+  {const PG={about:["About","Hi, I\u2019m Graphics Knight LTD., a creative designer."],services:["Services","Everything people see before they ever meet you."],process:["Process","How a project goes, from questions to files."],contact:["Contact","Let\u2019s start your project on Behance."]};if(PG[h]){flip(nowLabel,PG[h][0]);flip(nowSub,PG[h][1])}else if(!open&&prev&&/^(p-|about|services|process|contact)/.test(prev)){const k=K[hot];if(k){flip(nowLabel,k.name);flip(nowSub,k.intro)}}}
   markMenus();
   document.querySelectorAll(".sheet").forEach(s=>{if(s!==open&&s.classList.contains("open")){s.classList.remove("open");s.classList.add("closing");clearTimeout(s._ct);s._ct=setTimeout(()=>s.classList.remove("closing"),1000)}});
   document.body.classList.toggle("sheet-open",!!open);clearTimeout(route._full);document.body.classList.remove("sheet-full");if(open)route._full=setTimeout(()=>{if(document.body.classList.contains("sheet-open"))document.body.classList.add("sheet-full")},760);if(open)cur.classList.add("off");

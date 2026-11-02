@@ -94,7 +94,7 @@ def apply_studio_chain(raw_mono):
 async def build_mix(voice_name, rate_str, pitch_str, out_mp3):
     # Generate speech
     tmp_speech = f"tmp_{voice_name}.mp3"
-    comm = edge_tts.Communicate("Welcome to Shifa Studios.", voice_name, rate=rate_str, pitch=pitch_str)
+    comm = edge_tts.Communicate("Welcome to Graphics Knight.", voice_name, rate=rate_str, pitch=pitch_str)
     await comm.save(tmp_speech)
     
     s = pygame.mixer.Sound(tmp_speech)

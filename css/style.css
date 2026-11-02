@@ -472,7 +472,7 @@ h1.big em{font-size:1.32em;line-height:.7;color:color-mix(in srgb,var(--ink) 92%
 #now .label{font-family:var(--f-display)}
 .lead{font-family:var(--f-serif);font-style:normal}
 
-/* Upwork hire card */
+/* Behance hire card */
 .upcard{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;padding:30px;border-radius:24px;background:#14110d;color:#fff8ef;box-shadow:0 40px 80px -40px rgba(20,17,13,.7);position:relative;overflow:hidden}
 .upcard::before{content:"";position:absolute;width:420px;height:420px;right:-140px;top:-200px;border-radius:50%;background:radial-gradient(closest-side,#14A800,transparent);opacity:.35;animation:aura 14s ease-in-out infinite alternate}
 .upcard > *{position:relative}
@@ -1274,7 +1274,7 @@ body{transition:none!important}
   #foot{left:8px!important;right:8px!important;padding:10px 10px 10px!important;gap:8px!important;bottom:calc(10px + env(safe-area-inset-bottom,0px))!important}
   #now .sub,#now .hint{display:none!important}
   #now .label{font-size:16px!important}
-  /* header: logo left, Hire on Upwork right; the four page links on one row below */
+  /* header: logo left, Hire on Behance right; the four page links on one row below */
   #nav{padding-top:calc(62px + env(safe-area-inset-top,0px))!important;justify-content:center!important;overflow:visible!important;flex-wrap:nowrap!important;gap:6px!important;padding-left:10px!important;padding-right:10px!important}
   #nav a{font-size:10.5px!important;padding:8px 13px!important}
   #nav a.hire{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:12px;font-size:10px!important;padding:10px 12px!important}
@@ -1608,7 +1608,7 @@ body.filtering .tile.dim{opacity:.035!important}
   transition: transform 1.2s cubic-bezier(.16, 1, .3, 1)!important;
 }
 
-/* Category bottom text container matching original Shifa layout */
+/* Category bottom text container layout */
 .kcard .kc {
   position: relative!important;
   inset: auto!important;
