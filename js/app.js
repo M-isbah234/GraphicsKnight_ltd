@@ -487,10 +487,10 @@ function render(dt){
   /* Calibrated globe vertical center to match reference portfolio */
   const gTop=mobG?150:96,gBot=(footTop>200?footTop:H-140)-12;
   const R=Math.max(80,Math.min(W*(mobG?.36:.3),(gBot-gTop)*(mobG?.3:.36)));
-  const RX=Math.max(80,Math.min(W*(mobG?.37:.36),R*(mobG?1.25:1.75)));
+  const RX=Math.max(80,Math.min(W*(mobG?.37:.35),R*(mobG?1.18:1.50)));
   const rRatio=R>0?RX/R:1;
   const gcx=W/2,gcy=(gTop+gBot)/2;
-  const gw=Math.max(40,R*(mobG?.9:.74)*(VN&&VN<=3?1.9:VN&&VN<=5?1.5:VN&&VN<=9?1.15:1));
+  const gw=Math.max(40,R*(mobG?1.02:.88)*(VN&&VN<=3?1.9:VN&&VN<=5?1.5:VN&&VN<=9?1.15:1));
   for(let n=0;n<tiles.length;n++){
     const t=tiles[n],d=t.depth;
     if(isNaN(t.ox))t.ox=0;if(isNaN(t.oy))t.oy=0;
@@ -500,7 +500,7 @@ function render(dt){
     const y=mod(t.uy*PH+py+t.oy,PH)-(PH-H)/2-my*10*d;
     let X=x,Y=y,S=1;const h=t.size*t.rr+60;
     if(gB>0){
-      const on=!t.el.classList.contains("dim");const q=spin(on?sphere(t.vi,VN):sphere(n,tiles.length),rotX,rotY),z=q[2],ps=.34+.78*Math.pow((z+1)/2,1.6);
+      const on=!t.el.classList.contains("dim");const q=spin(on?sphere(t.vi,VN):sphere(n,tiles.length),rotX,rotY),z=q[2],ps=.38+.74*Math.pow((z+1)/2,1.35);
       t.gz=z;
       const Rv=on&&VN<=5?R*.62:R,gx=gcx+q[0]*Rv*rRatio-t.size/2,gy=gcy+q[1]*Rv-h/2,gs=gw/(t.size||200)*ps;
       X=x+(gx-x)*gB;Y=y+(gy-y)*gB;S=1+(gs-1)*gB;
