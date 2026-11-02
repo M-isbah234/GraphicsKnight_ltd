@@ -484,6 +484,7 @@ function render(dt){
   if(isNaN(vry))vry=0;
   const mobG=W<760;
   if(gB>0&&!dragging){const baseSpin=(gHover||reduce)?0:spinDir*.0022;rotY+=baseSpin*dt+vry*dt;rotX+=vrx*dt;const f=Math.pow(mobG?.955:.94,dt);vry*=f;vrx*=f;if(Math.abs(vry)<0.0001)vry=0;if(Math.abs(vrx)<0.0001)vrx=0}
+  /* Calibrated globe vertical center to match reference portfolio */
   const gTop=mobG?150:96,gBot=(footTop>200?footTop:H-140)-12;
   const R=Math.max(80,Math.min(W*(mobG?.36:.3),(gBot-gTop)*(mobG?.3:.36)));
   const RX=Math.max(80,Math.min(W*(mobG?.37:.36),R*(mobG?1.25:1.75)));
