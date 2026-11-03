@@ -1444,7 +1444,7 @@ body.filtering .tile.dim{opacity:.035!important}
 
 
 /* ==============================================================
-   GRAPHICS KNIGHT LTD. BRAND & CATEGORY CARD OVERRIDES
+   GRAPHIC KNIGHT BRAND & CATEGORY CARD OVERRIDES
    ============================================================== */
 
 /* 1. Header Brand & Outlined Cylinder - Desktop */
@@ -1784,5 +1784,149 @@ body.filtering .tile.dim{opacity:.035!important}
   height: 100%!important;
   display: block!important;
   object-fit: cover!important;
+}
+
+
+
+/* Top Continuous Breaking News Ticker */
+.top-ticker {
+  position: fixed!important;
+  left: 0!important;
+  right: 0!important;
+  width: 100vw!important;
+  height: 1cm!important;
+  background: transparent!important;
+  z-index: 850!important;
+  pointer-events: none!important;
+  overflow: hidden!important;
+  box-sizing: border-box!important;
+  transition: opacity .4s ease, visibility .4s ease!important;
+}
+
+@media (min-width: 761px) {
+  .top-ticker {
+    /* Positioned exactly 0.5 cm below the desktop navigation line */
+    top: calc(58px + 0.5cm + env(safe-area-inset-top, 0px))!important;
+  }
+}
+
+@media (max-width: 760px) {
+  .top-ticker {
+    /* Positioned exactly 0.5 cm below the mobile navigation tabs (Row 2) */
+    top: calc(76px + 0.5cm + env(safe-area-inset-top, 0px))!important;
+    height: 1cm!important;
+  }
+}
+
+.top-ticker .ticker-inner {
+  width: 100%!important;
+  height: 100%!important;
+  display: flex!important;
+  align-items: center!important;
+  overflow: hidden!important;
+  background: transparent!important;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 2.5%, #000 97.5%, transparent 100%)!important;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 2.5%, #000 97.5%, transparent 100%)!important;
+}
+
+.top-ticker .ticker-track {
+  display: flex!important;
+  align-items: center!important;
+  width: max-content!important;
+  white-space: nowrap!important;
+  will-change: transform!important;
+  animation: news-ticker-slide 55s linear infinite!important;
+  pointer-events: auto!important;
+}
+
+.top-ticker:hover .ticker-track {
+  animation-play-state: paused!important;
+}
+
+@keyframes news-ticker-slide {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-ticker .ticker-track {
+    animation-duration: 110s!important;
+  }
+}
+
+.ticker-unit {
+  display: inline-flex!important;
+  align-items: center!important;
+  gap: 12px!important;
+  padding-right: 48px!important;
+  font-family: var(--f-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace)!important;
+  font-size: 11.5px!important;
+  font-weight: 500!important;
+  color: var(--ink)!important;
+  letter-spacing: 0.025em!important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45), 0 0 12px rgba(0, 0, 0, 0.25)!important;
+  user-select: none!important;
+  -webkit-user-select: none!important;
+}
+
+@media (max-width: 760px) {
+  .ticker-unit {
+    font-size: 10.5px!important;
+    gap: 8px!important;
+    padding-right: 36px!important;
+  }
+}
+
+.ticker-badge {
+  display: inline-flex!important;
+  align-items: center!important;
+  gap: 4px!important;
+  padding: 3px 8px!important;
+  background: rgba(239, 68, 68, 0.18)!important;
+  border: 1px solid rgba(239, 68, 68, 0.55)!important;
+  border-radius: 999px!important;
+  color: #ff5c5c!important;
+  font-size: 10px!important;
+  font-weight: 700!important;
+  letter-spacing: 0.08em!important;
+  text-transform: uppercase!important;
+  line-height: 1!important;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.25)!important;
+}
+
+.ticker-lead {
+  font-weight: 700!important;
+  color: #ff5c5c!important;
+  letter-spacing: 0.05em!important;
+  text-transform: uppercase!important;
+}
+
+.ticker-body {
+  color: var(--ink)!important;
+  font-weight: 500!important;
+}
+
+.ticker-wa {
+  color: #25D366!important;
+  text-decoration: underline!important;
+  text-underline-offset: 3px!important;
+  font-weight: 700!important;
+  pointer-events: auto!important;
+  transition: color .2s, text-shadow .2s!important;
+}
+
+.ticker-wa:hover {
+  color: #4ade80!important;
+  text-shadow: 0 0 10px rgba(37, 211, 102, 0.6)!important;
+}
+
+.ticker-star {
+  color: #f59e0b!important;
+  font-size: 13px!important;
+  opacity: 0.85!important;
 }
 

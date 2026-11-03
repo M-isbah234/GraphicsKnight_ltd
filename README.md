@@ -1,6 +1,6 @@
-# GRAPHICS KNIGHT LTD. — 2D/3D Artist & Animator Portfolio
+# GRAPHIC KNIGHT — 2D/3D Artist & Animator Portfolio
 
-An interactive, physics-driven, audio-reactive portfolio for **Graphics Knight LTD.** (2D/3D artist and animator based in UT, USA).
+An interactive, physics-driven, audio-reactive portfolio for **Graphic Knight** (2D/3D artist and animator based in UT, USA).
 
 Featuring dynamic background palette shifting, 2D drifting physics field, Web Audio procedural sound design, custom cursor, category filters, and interactive slide-out modals.
 
