@@ -189,7 +189,7 @@ h2.sec{font-family:var(--f-display);font-weight:500;font-size:clamp(26px,3.2vw,3
 .prose{display:flex;flex-direction:column;gap:16px;max-width:62ch;font-size:16.5px}
 .meta-line{display:flex;flex-direction:column;gap:6px;color:var(--soft);border-top:1px solid var(--line);padding-top:18px}
 .about-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:44px;align-items:start}
-.portrait{border-radius:16px;overflow:hidden;aspect-ratio:4/5;width:100%;max-width:100%;background:color-mix(in srgb,var(--paper),var(--ink) 6%);border:1px dashed color-mix(in srgb,var(--line),var(--ink) 25%);box-shadow:0 30px 60px -30px rgba(20,17,13,.5);position:sticky;top:120px}
+.portrait{border-radius:16px;overflow:hidden;aspect-ratio:5/8;width:100%;max-width:100%;background:color-mix(in srgb,var(--paper),var(--ink) 6%);border:1px dashed color-mix(in srgb,var(--line),var(--ink) 25%);box-shadow:0 30px 60px -30px rgba(20,17,13,.5);position:sticky;top:120px}
 .portrait svg{display:block;width:100%;height:100%}
 @media (max-width:760px){.about-grid{grid-template-columns:1fr}.portrait{max-width:280px;position:static}}
 .principles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
@@ -1384,7 +1384,7 @@ body.filtering .tile.dim{opacity:.035!important}
 @media (max-width:760px){#foot{bottom:calc(14px + env(safe-area-inset-bottom,0px))}}
 
 /* real portrait */
-.portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 25%}
+.portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
 
 #brand .brand-link{align-items:flex-start;gap:6px}
 #brand .brand-tag{margin-left:2px}
