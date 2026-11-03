@@ -73,5 +73,5 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🔗 Official Profiles
 
-- **Behance**: [https://www.behance.net/GraphicsKnight_ltd](https://www.behance.net/GraphicsKnight_ltd)
+- **Official WhatsApp**: [+1 713 769 4958](https://wa.me/17137694958)
 - **Location**: UT, USA
