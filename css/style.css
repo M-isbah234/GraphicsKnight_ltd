@@ -1384,7 +1384,7 @@ body.filtering .tile.dim{opacity:.035!important}
 @media (max-width:760px){#foot{bottom:calc(14px + env(safe-area-inset-bottom,0px))}}
 
 /* real portrait */
-.portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 30%}
+.portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 25%}
 
 #brand .brand-link{align-items:flex-start;gap:6px}
 #brand .brand-tag{margin-left:2px}
