@@ -1441,112 +1441,248 @@ body.filtering .tile.dim{opacity:.035!important}
   #grain,#bgtype .track,.band .track,#aura i,.seal .orbit{animation:none!important}
 }
 
-.brand-name {
-  font-family: "Cormorant Garamond", "Instrument Serif", "Playfair Display", Georgia, serif!important;
-  font-size: 24px!important;
-  font-weight: 600!important;
-  letter-spacing: 0.01em!important;
-  color: var(--ink)!important;
-  line-height: 1!important;
-  display: inline-flex!important;
-  align-items: center!important;
-  justify-content: center!important;
-  white-space: nowrap!important;
-  user-select: none!important;
-  -webkit-user-select: none!important;
-  transition: color .8s ease!important;
-}
-#brand .brand-link {
-  height: 40px!important;
-  padding: 0 20px!important;
-  border-radius: 999px!important;
-  display: inline-flex!important;
-  align-items: center!important;
-  justify-content: center!important;
-  background: color-mix(in srgb, var(--paper) 86%, transparent)!important;
-  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent)!important;
-  text-decoration: none!important;
-  transition: background-color .8s, border-color .8s, transform .35s var(--ease)!important;
-}
-#brand .brand-link:hover {
-  transform: scale(1.02)!important;
-}
-@media (max-width: 900px) {
-  #brand .brand-link {
-    height: 38px!important;
-    padding: 0 15px!important;
-  }
-  .brand-name {
-    font-size: 21px!important;
-  }
-}
 
 
 /* ==============================================================
    GRAPHICS KNIGHT LTD. BRAND & CATEGORY CARD OVERRIDES
    ============================================================== */
 
-/* 1. Header Brand & Outlined Cylinder */
-#brand {
-  top: 0!important;
-  left: 0!important;
-  padding-top: calc(22px + env(safe-area-inset-top, 0px))!important;
-  padding-left: max(38px, calc(env(safe-area-inset-left, 0px) + 28px))!important;
-  padding-right: 24px!important;
-  z-index: 900!important;
-  pointer-events: auto!important;
+/* 1. Header Brand & Outlined Cylinder - Desktop */
+@media (min-width: 761px) {
+  #brand {
+    top: 0!important;
+    left: 0!important;
+    padding-top: calc(22px + env(safe-area-inset-top, 0px))!important;
+    padding-left: max(38px, calc(env(safe-area-inset-left, 0px) + 28px))!important;
+    padding-right: 24px!important;
+    z-index: 900!important;
+    pointer-events: auto!important;
+  }
+
+  #brand .brand-link {
+    width: auto!important;
+    min-width: max-content!important;
+    max-width: max-content!important;
+    height: 44px!important;
+    padding: 0 24px!important;
+    border-radius: 999px!important;
+    display: inline-flex!important;
+    align-items: center!important;
+    justify-content: center!important;
+    box-sizing: border-box!important;
+    background: color-mix(in srgb, var(--paper) 88%, transparent)!important;
+    border: 1.5px solid color-mix(in srgb, var(--ink) 24%, transparent)!important;
+    box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.15)!important;
+    backdrop-filter: blur(10px)!important;
+    -webkit-backdrop-filter: blur(10px)!important;
+    text-decoration: none!important;
+    white-space: nowrap!important;
+    overflow: visible!important;
+    transition: background-color .8s, border-color .8s, transform .35s var(--ease), box-shadow .35s var(--ease)!important;
+  }
+
+  #brand .brand-link:hover {
+    transform: translateY(-1px) scale(1.02)!important;
+    border-color: color-mix(in srgb, var(--ink) 50%, transparent)!important;
+    box-shadow: 0 6px 22px -4px rgba(0, 0, 0, 0.22)!important;
+  }
+
+  .brand-name {
+    width: auto!important;
+    min-width: max-content!important;
+    font-family: "Cormorant Garamond", "Instrument Serif", "Playfair Display", Georgia, serif!important;
+    font-size: 23px!important;
+    font-weight: 600!important;
+    letter-spacing: 0.02em!important;
+    color: var(--ink)!important;
+    line-height: 1!important;
+    display: inline-block!important;
+    white-space: nowrap!important;
+    user-select: none!important;
+    -webkit-user-select: none!important;
+    overflow: visible!important;
+    transition: color .8s ease!important;
+  }
+
+  #brand .brand-link .lg,
+  #brand .brand-link .lg-horiz {
+    width: auto!important;
+    min-width: max-content!important;
+    max-width: none!important;
+  }
 }
 
-#brand .brand-link {
-  width: auto!important;
-  min-width: max-content!important;
-  max-width: max-content!important;
-  height: 44px!important;
-  padding: 0 24px!important;
-  border-radius: 999px!important;
-  display: inline-flex!important;
-  align-items: center!important;
-  justify-content: center!important;
-  box-sizing: border-box!important;
-  background: color-mix(in srgb, var(--paper) 88%, transparent)!important;
-  border: 1.5px solid color-mix(in srgb, var(--ink) 24%, transparent)!important;
-  box-shadow: 0 4px 18px -4px rgba(0, 0, 0, 0.15)!important;
-  backdrop-filter: blur(10px)!important;
-  -webkit-backdrop-filter: blur(10px)!important;
-  text-decoration: none!important;
-  white-space: nowrap!important;
-  overflow: visible!important;
-  transition: background-color .8s, border-color .8s, transform .35s var(--ease), box-shadow .35s var(--ease)!important;
+/* 2. Mobile Header, Brand, Nav & Accessibility Overrides */
+@media (max-width: 760px) {
+  /* Top Brand Pill (Row 1, Left) */
+  #brand {
+    position: fixed!important;
+    top: 0!important;
+    left: 0!important;
+    right: auto!important;
+    padding-top: calc(10px + env(safe-area-inset-top, 0px))!important;
+    padding-left: max(12px, calc(env(safe-area-inset-left, 0px) + 12px))!important;
+    padding-right: 0!important;
+    z-index: 950!important;
+    pointer-events: auto!important;
+  }
+
+  #brand .brand-link {
+    width: auto!important;
+    height: 32px!important;
+    padding: 0 13px!important;
+    border-radius: 999px!important;
+    display: inline-flex!important;
+    align-items: center!important;
+    justify-content: center!important;
+    box-sizing: border-box!important;
+    background: color-mix(in srgb, var(--paper) 92%, transparent)!important;
+    border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent)!important;
+    box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.12)!important;
+    backdrop-filter: blur(10px)!important;
+    -webkit-backdrop-filter: blur(10px)!important;
+    text-decoration: none!important;
+    white-space: nowrap!important;
+  }
+
+  .brand-name {
+    font-family: "Cormorant Garamond", "Instrument Serif", "Playfair Display", Georgia, serif!important;
+    font-size: 14px!important;
+    font-weight: 600!important;
+    letter-spacing: 0.01em!important;
+    color: var(--ink)!important;
+    line-height: 1!important;
+    display: inline-block!important;
+    white-space: nowrap!important;
+    user-select: none!important;
+    -webkit-user-select: none!important;
+  }
+
+  /* Hire on Behance Button (Row 1, Right) */
+  #nav a.hire {
+    position: fixed!important;
+    top: calc(10px + env(safe-area-inset-top, 0px))!important;
+    right: max(12px, calc(env(safe-area-inset-right, 0px) + 12px))!important;
+    height: 32px!important;
+    line-height: 32px!important;
+    padding: 0 11px!important;
+    font-size: 9.5px!important;
+    font-weight: 700!important;
+    letter-spacing: 0.04em!important;
+    border-radius: 999px!important;
+    display: inline-flex!important;
+    align-items: center!important;
+    justify-content: center!important;
+    white-space: nowrap!important;
+    z-index: 960!important;
+    box-sizing: border-box!important;
+    background: #14A800!important;
+    color: #fff!important;
+    border: 1px solid #14A800!important;
+    box-shadow: 0 2px 10px -2px rgba(20, 168, 0, 0.35)!important;
+  }
+
+  /* Navigation Links Row (Row 2, Centered) */
+  #nav {
+    position: fixed!important;
+    top: 0!important;
+    left: 0!important;
+    right: 0!important;
+    width: 100vw!important;
+    max-width: 100vw!important;
+    box-sizing: border-box!important;
+    padding-top: calc(48px + env(safe-area-inset-top, 0px))!important;
+    padding-left: 8px!important;
+    padding-right: 8px!important;
+    padding-bottom: 4px!important;
+    display: flex!important;
+    justify-content: center!important;
+    align-items: center!important;
+    gap: 5px!important;
+    overflow-x: auto!important;
+    -webkit-overflow-scrolling: touch!important;
+    scrollbar-width: none!important;
+    pointer-events: none!important;
+    z-index: 900!important;
+  }
+
+  #nav::-webkit-scrollbar {
+    display: none!important;
+  }
+
+  #nav a:not(.hire) {
+    pointer-events: auto!important;
+    flex: none!important;
+    font-size: 10px!important;
+    padding: 6px 11px!important;
+    border-radius: 999px!important;
+    height: auto!important;
+    letter-spacing: 0.05em!important;
+    line-height: 1!important;
+    background: color-mix(in srgb, var(--paper) 90%, transparent)!important;
+    border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent)!important;
+    backdrop-filter: blur(10px)!important;
+    -webkit-backdrop-filter: blur(10px)!important;
+  }
+
+  /* Modal Sheets Mobile Accessibility */
+  .sheet::before {
+    height: 100px!important;
+    margin-bottom: -100px!important;
+  }
+  .sheet-inner {
+    padding-top: calc(96px + env(safe-area-inset-top, 0px))!important;
+    padding-bottom: calc(var(--footH, 90px) + 36px + env(safe-area-inset-bottom, 0px))!important;
+    padding-left: max(14px, env(safe-area-inset-left, 0px))!important;
+    padding-right: max(14px, env(safe-area-inset-right, 0px))!important;
+    gap: 32px!important;
+  }
+  .sheet h1.big {
+    font-size: clamp(30px, 8.5vw, 46px)!important;
+    line-height: 1.05!important;
+  }
+  .sheet h2.sec {
+    font-size: 22px!important;
+    line-height: 1.2!important;
+  }
+  .sheet .lead {
+    font-size: 20px!important;
+    line-height: 1.3!important;
+  }
+  .sheet .prose {
+    font-size: 15px!important;
+    line-height: 1.55!important;
+  }
 }
 
-#brand .brand-link:hover {
-  transform: translateY(-1px) scale(1.02)!important;
-  border-color: color-mix(in srgb, var(--ink) 50%, transparent)!important;
-  box-shadow: 0 6px 22px -4px rgba(0, 0, 0, 0.22)!important;
-}
-
-.brand-name {
-  width: auto!important;
-  min-width: max-content!important;
-  font-family: "Cormorant Garamond", "Instrument Serif", "Playfair Display", Georgia, serif!important;
-  font-size: 23px!important;
-  font-weight: 600!important;
-  letter-spacing: 0.02em!important;
-  color: var(--ink)!important;
-  line-height: 1!important;
-  display: inline-block!important;
-  white-space: nowrap!important;
-  user-select: none!important;
-  -webkit-user-select: none!important;
-  overflow: visible!important;
-  transition: color .8s ease!important;
-}
-
-#brand .brand-link .lg,
-#brand .brand-link .lg-horiz {
-  width: auto!important;
-  min-width: max-content!important;
-  max-width: none!important;
+/* Extra small mobile screens (<= 350px) */
+@media (max-width: 350px) {
+  #brand {
+    padding-left: 8px!important;
+  }
+  #brand .brand-link {
+    height: 30px!important;
+    padding: 0 10px!important;
+    max-width: calc(100vw - 105px)!important;
+  }
+  .brand-name {
+    font-size: 12px!important;
+  }
+  #nav a.hire {
+    right: 8px!important;
+    height: 30px!important;
+    line-height: 30px!important;
+    font-size: 9px!important;
+    padding: 0 8px!important;
+  }
+  #nav {
+    padding-top: calc(44px + env(safe-area-inset-top, 0px))!important;
+    gap: 3px!important;
+  }
+  #nav a:not(.hire) {
+    font-size: 9px!important;
+    padding: 5px 8px!important;
+  }
 }
 
 /* Category Cards - Natural Aspect Ratio & Perfect Fit */
