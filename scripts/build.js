@@ -32,7 +32,6 @@ const filesToCopy = [
   'android-chrome-192x192.png',
   'android-chrome-512x512.png',
   'og-share-image-1200x630.jpg',
-  'preview.gif'
 ];
 
 const dirsToCopy = [
