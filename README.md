@@ -114,3 +114,54 @@ This portfolio showcases 229 artworks across 21 curated categories:
 - Hostinger Cloud Platform (LiteSpeed Web Server with custom rewrite and cache rules)
 - Vercel Global Edge Network (automated git-integrated mirrors and fallback distribution)
 - Apache / LiteSpeed .htaccess configuration (GZIP/Brotli compression and MIME mapping)
+
+
+---
+
+## Quick Start & Local Development
+
+### Prerequisites
+- Node.js (v18.0.0 or higher recommended)
+- Git command-line tools
+
+### Installation & Execution
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/M-isbah234/GraphicsKnight_ltd.git
+   cd GraphicsKnight_ltd
+   ```
+
+2. Launch local server:
+   ```bash
+   npm start
+   # or run directly with Node
+   node server.js
+   ```
+
+3. Open in browser:
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+### Production Build
+
+To generate the distribution bundle for Hostinger or static web servers:
+```bash
+npm run build
+```
+The compiled output is generated in the `dist/` directory, along with a standalone `dist.zip` ready for direct extraction inside Hostinger `public_html`.
+
+---
+
+## Inquiries & Collaboration
+
+- Primary Direct Contact: [WhatsApp Direct Message](https://wa.me/17137694958) (+1 713 769 4958)
+- Studio Location: Utah (UT), United States
+- Identity & Verification Notice: Graphic Knight is active on Discord, Reddit, Twitter/X, and freelance platforms. If approached by any individual utilizing Graphic Knight artworks or portfolio assets, verify their credentials through official WhatsApp before issuing any payments.
+
+---
+
+<div align="center">
+
+<img src="banner.jpg" alt="Graphic Knight Studio Card Banner" width="100%" style="border-radius: 12px;" />
+
+</div>
