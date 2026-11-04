@@ -15,8 +15,8 @@ console.log('Loop b64 length:', loopB64.length);
 
 let indexContent = fs.readFileSync(indexPath, 'utf-8');
 
-// Replace the mehak.studio audio fallbacks
-const oldAudioBlock = `  function mk(){if(intro)return;intro=new Audio();intro.preload="auto";intro.src=src("intro");intro.onerror=()=>{if(!intro.src.includes("mehak.studio"))intro.src="https://mehak.studio/audio/intro.mp3"};loop=new Audio();loop.preload="auto";loop.loop=true;loop.src=src("loop");loop.onerror=()=>{if(!loop.src.includes("mehak.studio"))loop.src="https://mehak.studio/audio/loop.mp3"};`;
+// Audio fallbacks
+const oldAudioBlock = `  function mk(){if(intro)return;intro=new Audio();intro.preload="auto";intro.src=src("intro");intro.onerror=()=>{if(!intro.src.includes("example.com"))intro.src="https://example.com/audio/intro.mp3"};loop=new Audio();loop.preload="auto";loop.loop=true;loop.src=src("loop");loop.onerror=()=>{if(!loop.src.includes("example.com"))loop.src="https://example.com/audio/loop.mp3"};`;
 const newAudioBlock = `  function mk(){if(intro)return;intro=new Audio();intro.preload="auto";intro.src=src("intro");loop=new Audio();loop.preload="auto";loop.loop=true;loop.src=src("loop");`;
 
 if (indexContent.includes(oldAudioBlock)) {

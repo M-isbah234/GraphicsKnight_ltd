@@ -38,7 +38,8 @@ const filesToCopy = [
 const dirsToCopy = [
   'css',
   'js',
-  'audio'
+  'audio',
+  'img'
 ];
 
 // Copy files

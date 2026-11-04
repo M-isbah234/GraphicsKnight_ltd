@@ -9,7 +9,7 @@
 <meta property="og:image" content="og-share-image-1200x630.jpg">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Graphic Knight — 2D/3D Artist &amp; Animator</title>
-<script>try{if((localStorage.getItem("sa-theme")||localStorage.getItem("mf-theme"))==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
+<script>try{if((localStorage.getItem("gk-theme")||localStorage.getItem("theme"))==="light")document.documentElement.classList.remove("dark")}catch(e){}</script>
 <meta name="description" content="Graphic Knight, 2D/3D artist and animator in UT, USA. Specializing in character design, comic art, banners, logos, emotes, tattoo design, and 2D animation.">
 <meta property="og:title" content="Graphic Knight — 2D/3D Artist &amp; Animator">
 <meta property="og:description" content="2D and 3D static and animated artworks. Character designs, comics, banners, emotes, and tattoo art.">
@@ -2453,9 +2453,8 @@ const K = [
  {key:"animation", name:"2D Animation", f:"Animation", intro:"Hand-crafted 2D animations, motion graphics, loops, and animated character shorts.", del:"Master video MP4, loopable GIF, player embed", cover:"animation-1"},
  {key:"child-book-illustration", name:"Child Book Illustration", f:"Illustration", intro:"Picture book spreads and characters kids remember.", del:"Picture book spreads, character sheets, print files", cover:"plant-a-seed"}
 ];
-// Asset source configuration: by default streams assets from https://mehak.studio/
-// If you download the assets locally using 'npm run download', set window.__ASSET_BASE = '' (or './')
-const ASSET_BASE = (typeof window !== 'undefined' && window.__ASSET_BASE !== undefined) ? window.__ASSET_BASE : 'https://mehak.studio/';
+// Asset source configuration
+const ASSET_BASE = (typeof window !== 'undefined' && window.__ASSET_BASE !== undefined) ? window.__ASSET_BASE : '';
 const IMGS = window.__IMG || null;
 const TH = p => p.img_url || (IMGS ? IMGS[p.img] : (ASSET_BASE ? `${ASSET_BASE}img/t/${p.img}.webp` : `img/t/${p.img}.webp`));
 const FULL = p => p.full_url || (IMGS ? IMGS[p.img] : (ASSET_BASE ? `${ASSET_BASE}img/f/${p.img}.webp` : `img/f/${p.img}.webp`));
@@ -2482,7 +2481,7 @@ const auraEl=document.getElementById("aura");let curPaper="";
 const wash=document.getElementById("wash");
 /* recolor = one style change + a compositor-only crossfade of the old color on top */
 /* dark mode keeps every hue but sinks the paper into near-black and lifts the ink */
-let DARK=true;try{DARK=(localStorage.getItem("sa-theme")||localStorage.getItem("mf-theme"))!=="light"}catch(e){}
+let DARK=true;try{DARK=(localStorage.getItem("gk-theme")||localStorage.getItem("theme"))!=="light"}catch(e){}
 function mixHex(h1,h2,t){const a=parseInt(h1.slice(1),16),b=parseInt(h2.slice(1),16);const c=(s)=>Math.round(((a>>s)&255)*(1-t)+((b>>s)&255)*t);return "#"+((1<<24)|(c(16)<<16)|(c(8)<<8)|c(0)).toString(16).slice(1)}
 function pal(hex){const p=DARK?[mixHex(hex,"#0b0a09",.66),mixHex(hex,"#fff8ef",.86)]:[hex,inkFor(hex)];p.push(mixHex(p[1],p[0],.36),mixHex(p[1],p[0],.8));return p}
 function applyPal(el,p){el.style.setProperty("--paper",p[0]);el.style.setProperty("--ink",p[1]);el.style.setProperty("--soft",p[2]);el.style.setProperty("--line",p[3])}
@@ -2809,7 +2808,7 @@ const fwrap=document.getElementById("filters");
 const ind=document.createElement("span");ind.className="ind";ind.setAttribute("aria-hidden","true");fwrap.append(ind);
 const hint=document.getElementById("hint"),emptyEl=document.getElementById("empty");
 let activeFilter="All",activeSub=null;
-try{const s=localStorage.getItem("sa-filter")||localStorage.getItem("mf-filter");if(s&&FILTERS.includes(s))activeFilter=s}catch(e){}
+try{const s=localStorage.getItem("gk-filter")||localStorage.getItem("filter");if(s&&FILTERS.includes(s))activeFilter=s}catch(e){}
 const CHEV=`<svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 6.5 5 3.5 8 6.5"/></svg>`;
 FILTERS.forEach(f=>{
   const g=document.createElement("div");g.className="fgroup";g.dataset.f=f;
@@ -2854,7 +2853,7 @@ document.addEventListener("click",e=>{if(!e.target.closest(".fgroup"))closeMenus
 addEventListener("keydown",e=>{if(e.key==="Escape")closeMenus()});
 function moveInd(){const b=fwrap.querySelector('.fgroup.active');if(!b)return;const r=b.getBoundingClientRect(),pr=fwrap.getBoundingClientRect();ind.style.width=r.width+"px";ind.style.height=r.height+"px";ind.style.transform=`translate(${r.left-pr.left}px,${r.top-pr.top}px)`}
 function applyFilter(f,user){
-  activeFilter=f;activeSub=null;try{localStorage.setItem("sa-filter",f)}catch(e){}
+  activeFilter=f;activeSub=null;try{localStorage.setItem("gk-filter",f)}catch(e){}
   fwrap.querySelectorAll(".fgroup").forEach(g=>{g.classList.toggle("active",g.dataset.f===f);g.querySelector(".fbtn").setAttribute("aria-pressed",g.dataset.f===f?"true":"false")});
   moveInd();markMenus();updateTiles();
   if(user&&!sheetOpen()){pendingBg=null;theme(f==="All"?K[hot].bg:CAT_COLOR[f])}
@@ -3145,7 +3144,7 @@ viewBtn.setAttribute("aria-pressed",GLOBE?"true":"false");document.getElementByI
 /* ---------- dark mode toggle ---------- */
 const modeBtn=document.getElementById("modeBtn");
 function setMode(d,anim){DARK=d;root.classList.toggle("dark",d);modeBtn.setAttribute("aria-checked",d?"true":"false");document.getElementById("modeTip").textContent=d?"Light mode":"Dark mode";
-  try{localStorage.setItem("sa-theme",d?"dark":"light")}catch(e){}
+  try{localStorage.setItem("gk-theme",d?"dark":"light")}catch(e){}
   theme(curPaper||K[hot].bg,true);
   document.querySelectorAll(".sheet.open").forEach(s=>applyPal(s,pal(curPaper)));
 }
@@ -3169,9 +3168,9 @@ const SND=(()=>{
   function fade(a,to,ms,done){clearInterval(a._f);const from=a.volume,t0=performance.now();a._f=setInterval(()=>{const k=Math.min(1,(performance.now()-t0)/ms);try{a.volume=from+(to-from)*k}catch(e){}if(k>=1){clearInterval(a._f);done&&done()}},40)}
   function startLoop(ms){if(!on)return;loop.volume=0;tryPlay(loop);fade(loop,1,ms)}
   function ui(){const b=document.getElementById("sndBtn");if(!b)return;b.setAttribute("aria-pressed",on?"true":"false");const l=on?"Mute music":"Play music";b.setAttribute("aria-label",l);document.getElementById("sndTip").textContent=l}
-  function save(){try{localStorage.setItem("sa-sound",on?"on":"off")}catch(e){}}
+  function save(){try{localStorage.setItem("gk-sound",on?"on":"off")}catch(e){}}
   return{
-    pref(){try{const s=localStorage.getItem("sa-sound")||localStorage.getItem("mf-sound");return s!=="off"}catch(e){return true}},
+    pref(){try{const s=localStorage.getItem("gk-sound")||localStorage.getItem("sound");return s!=="off"}catch(e){return true}},
     warm(){mk();try{intro.load();loop.load()}catch(e){}},
     /* runs inside the tap: the intro (music + voice) starts at once, the loop is unlocked in the same gesture */
     intro(){mk();on=true;ui();save();intro.currentTime=0;intro.volume=1;tryPlay(intro);
@@ -3203,13 +3202,13 @@ else{
      and one tap starts the picture and the score together, so they stay in sync */
   introOn=true;SND.warm();
   let done=false,started=false;
-  const finish=skip=>{if(done)return;done=true;introOn=false;if(skip)SND.skipIntro();intro.classList.add("done");setTimeout(ready,120);setTimeout(()=>intro.remove(),1500);try{sessionStorage.setItem("sa-intro","1")}catch(err){}};
+  const finish=skip=>{if(done)return;done=true;introOn=false;if(skip)SND.skipIntro();intro.classList.add("done");setTimeout(ready,120);setTimeout(()=>intro.remove(),1500);try{sessionStorage.setItem("gk-intro","1")}catch(err){}};
   document.getElementById("iSkip").addEventListener("click",()=>finish(true));
   const play=withSound=>{if(started)return;started=true;if(withSound)SND.intro();
     requestAnimationFrame(()=>{intro.classList.add("play");setTimeout(()=>finish(false),4200);
       let q=tiles.slice();const warmNext=()=>{const part=q.splice(0,4);part.forEach(t=>{const im=t.btn.querySelector("img");if(im&&im.decode)im.decode().catch(()=>{})});if(q.length)setTimeout(warmNext,220)};setTimeout(warmNext,900)})};
   document.getElementById("opEnter").addEventListener("click",()=>play(true));
-  document.getElementById("opQuiet").addEventListener("click",()=>{try{localStorage.setItem("sa-sound","off")}catch(e){}play(false)});
+  document.getElementById("opQuiet").addEventListener("click",()=>{try{localStorage.setItem("gk-sound","off")}catch(e){}play(false)});
   const arm=()=>{
     /* montage: eight covers from different categories, decoded before the tap so every cut is instant */
     const reel=document.getElementById("opReel");const picks=[];const seen=new Set();for(const t of tiles){const im=t.btn.querySelector("img");if(im&&!seen.has(im.src)){seen.add(im.src);picks.push(im.src)}if(picks.length>=8)break}
@@ -3219,7 +3218,7 @@ else{
     requestAnimationFrame(()=>requestAnimationFrame(()=>intro.classList.add("armed")))};
   const fr=document.fonts&&document.fonts.ready;if(fr){Promise.race([fr,new Promise(r=>setTimeout(r,900))]).then(arm)}else arm();
 }
-function sessionStorageGet(){try{return (sessionStorage.getItem("sa-intro")||sessionStorage.getItem("mf-intro"))==="1"}catch(e){return false}}
+function sessionStorageGet(){try{return (sessionStorage.getItem("gk-intro"))==="1"}catch(e){return false}}
 })();
 
 </script>

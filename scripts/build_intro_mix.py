@@ -10,7 +10,7 @@ rate = 44100
 # 1. Load the original full audio (9.5s)
 import pygame, pygame.sndarray
 pygame.mixer.init()
-s_orig = pygame.mixer.Sound('original_mehak_intro.mp3')
+s_orig = pygame.mixer.Sound('original_intro_base.mp3')
 orig_data = pygame.sndarray.array(s_orig) # (418950, 2)
 total_samples = len(orig_data)
 

@@ -51,10 +51,10 @@ async function run() {
   for (let i = 0; i < projects.length; i++) {
     const p = projects[i];
     const thumbName = `${p.img}.webp`;
-    const tUrl = `https://mehak.studio/img/t/${thumbName}`;
+    const tUrl = `/img/t/${thumbName}`;
     const tDest = path.join(tDir, thumbName);
 
-    const fUrl = `https://mehak.studio/img/f/${thumbName}`;
+    const fUrl = `/img/f/${thumbName}`;
     const fDest = path.join(fDir, thumbName);
 
     try {
