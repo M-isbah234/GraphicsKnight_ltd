@@ -5,16 +5,25 @@ import tempfile
 import urllib.request
 import websockets
 import base64
-from PIL import Image
+from PIL import Image, ImageDraw
 import io
 import os
+
+def add_rounded_corners(im, radius=14):
+    mask = Image.new('L', im.size, 0)
+    draw = ImageDraw.Draw(mask)
+    draw.rounded_rectangle([(0, 0), im.size], radius=radius, fill=255)
+    
+    bg = Image.new('RGB', im.size, (14, 12, 10))
+    bg.paste(im, (0, 0), mask)
+    return bg
 
 async def generate_crisp_gif():
     temp_dir = tempfile.mkdtemp()
     edge_path = r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
     
     # 16:9 viewport standard
-    vw, vh = 1200, 675
+    vw, vh = 1280, 720
     
     proc = subprocess.Popen([
         edge_path,
@@ -27,7 +36,7 @@ async def generate_crisp_gif():
         'http://localhost:3000'
     ])
     
-    await asyncio.sleep(2.5)
+    await asyncio.sleep(2.0)
     
     try:
         req = urllib.request.urlopen('http://127.0.0.1:9888/json')
@@ -54,27 +63,30 @@ async def generate_crisp_gif():
                 "mobile": False
             })
 
-            # Dismiss opener and trigger ready
+            # Dismiss opener and start field
             await send("Runtime.evaluate", {
                 "expression": """
-                const op = document.getElementById('opener'); 
-                if(op) op.remove(); 
-                if(typeof ready === 'function') ready();
+                const op = document.getElementById('opener');
+                if (op) op.remove();
+                if (typeof ready === 'function') ready();
                 document.body.classList.add('ready');
                 """
             })
-            await asyncio.sleep(1.2)
+            
+            # Wait for images and textures to decode
+            print("Waiting for artwork assets to warm and decode...")
+            await asyncio.sleep(3.5)
             
             frames = []
-            num_frames = 32
-            print(f"Capturing {num_frames} frames at {vw}x{vh}...")
+            num_frames = 24
+            print(f"Recording {num_frames} interactive frames at {vw}x{vh}...")
             
             for i in range(num_frames):
                 t = i / float(num_frames)
                 
-                # Organic smooth curve for mouse
-                mx = vw * 0.5 + 240 * (0.5 - abs(t - 0.5) * 2)
-                my = vh * 0.5 + 60 * (t * 2 - 1 if t < 0.5 else 1 - (t - 0.5) * 2)
+                # Smooth interactive cursor movement across the artwork cards
+                mx = vw * 0.35 + (vw * 0.35) * (0.5 - abs(t - 0.5) * 2)
+                my = vh * 0.42 + 90 * (t * 2 - 1 if t < 0.5 else 1 - (t - 0.5) * 2)
                 
                 await send("Input.dispatchMouseEvent", {
                     "type": "mouseMoved",
@@ -85,15 +97,15 @@ async def generate_crisp_gif():
                 await send("Runtime.evaluate", {
                     "expression": """
                     if(typeof px !== 'undefined') {
-                        px += 2.0;
-                        py -= 0.8;
+                        px += 3.2;
+                        py -= 1.2;
                     }
                     """
                 })
                 
                 await asyncio.sleep(0.08)
                 
-                # Capture uncompressed PNG screenshot for maximum clarity
+                # Capture uncompressed frame
                 resp = await send("Page.captureScreenshot", {
                     "format": "png",
                     "clip": {
@@ -107,16 +119,18 @@ async def generate_crisp_gif():
                 img_data = base64.b64decode(resp['result']['data'])
                 img = Image.open(io.BytesIO(img_data)).convert('RGB')
                 
-                # Resize proportionally (maintaining exact 16:9 ratio without any distortion)
-                # 960 x 540 is standard high-def 16:9
+                # Proportional 16:9 resize to 960x540
                 img_scaled = img.resize((960, 540), Image.Resampling.LANCZOS)
-                frames.append(img_scaled)
-                print(f"Frame {i+1}/{num_frames} captured ({img_scaled.size})")
+                
+                # Add subtle rounded corners
+                img_rounded = add_rounded_corners(img_scaled, radius=14)
+                
+                frames.append(img_rounded)
+                print(f"Captured frame {i+1}/{num_frames}")
 
-            print("Quantizing with 256 colors adaptive palette without noisy dithering...")
+            print("Optimizing adaptive color palette for high clarity...")
             processed_frames = []
             for f in frames:
-                # Use max 256 colors with ADAPTIVE palette and dither=NONE for pristine clean gradients
                 p = f.convert('P', palette=Image.Palette.ADAPTIVE, colors=256)
                 processed_frames.append(p)
             
@@ -126,11 +140,11 @@ async def generate_crisp_gif():
                 save_all=True,
                 append_images=processed_frames[1:],
                 optimize=True,
-                duration=95,
+                duration=115,
                 loop=0
             )
             size_mb = os.path.getsize(out_path) / (1024 * 1024)
-            print(f"Pristine preview GIF successfully generated at {out_path} ({size_mb:.2f} MB, {processed_frames[0].size})")
+            print(f"Successfully generated preview.gif ({size_mb:.2f} MB, {processed_frames[0].size})")
             
     finally:
         proc.terminate()
