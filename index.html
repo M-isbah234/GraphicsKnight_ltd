@@ -3148,6 +3148,7 @@ function setView(gl){GLOBE=gl;
   if(gl){tiles.forEach(t=>{t.fx=t.fy=0})}
   if(cSheet.classList.contains("open"))catGlobeSetup();updateTiles()}
 viewBtn.addEventListener("click",()=>setView(!GLOBE));
+window.setView=setView;
 viewBtn.setAttribute("aria-pressed",GLOBE?"true":"false");document.getElementById("viewTip").textContent=GLOBE?"Scatter view":"Globe view";root.classList.toggle("globe",GLOBE);
 
 /* logo: replay the light sweep on hover */
