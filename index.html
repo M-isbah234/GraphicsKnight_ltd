@@ -2837,7 +2837,7 @@ function sphere(k,N){
 function spin(p,rx,ry){const cy=Math.cos(ry),sy=Math.sin(ry),cx=Math.cos(rx),sx=Math.sin(rx);const x1=p[0]*cy+p[2]*sy,z1=-p[0]*sy+p[2]*cy;return [x1,p[1]*cx-z1*sx,p[1]*sx+z1*cx]}
 /* the filtered cards settle into a tidy, slightly tilted layout centered between header and bottom bar */
 function focusGrid(){
-  const on=tiles.filter(t=>!t.el.classList.contains("dim"));const n=on.length;if(!n)return null;
+  const on=tiles.filter(t=>t.cycle===0&&!t.el.classList.contains("dim"));const n=on.length;if(!n)return null;
   on.forEach(t=>{t.A=(t.el.offsetHeight||t.size*t.rr+60)/t.size});
   const mob=W<760,top=mob?178:Math.max(140,H*.16),bot=(document.getElementById("foot").getBoundingClientRect().top||H-150)-(mob?16:26),padL=mob?14:40,padR=mob?72:110,gap=mob?14:30;
   const aw=W-padL-padR,ah=Math.max(160,bot-top),maxA=Math.max(...on.map(t=>t.A));
@@ -2846,7 +2846,7 @@ function focusGrid(){
   const {cw,c}=best,rows=Math.ceil(n/c),rowH=cw*maxA,totH=rows*rowH+gap*(rows-1);
   const m=new Map();on.forEach((t,k)=>{const row=Math.floor(k/c),inRow=Math.min(c,n-row*c),col=k-row*c;
     const rw=inRow*cw+(inRow-1)*gap,x0=padL+(aw-rw)/2+col*(cw+gap),y0=top+(ah-totH)/2+row*(rowH+gap)+(rowH-cw*t.A)/2;
-    const s=cw/t.size,h0=t.size*t.A;m.set(t,{x:x0-(t.size-cw)/2,y:y0-h0*(1-s)/2,s,r:(rand(t.i,9)-.5)*4,k})});
+    const s=cw/t.size,h0=t.size*t.A;m.set(t,{x:x0-(t.size-cw)/2,y:y0-h0*(1-s)/2,s,r:(rand(t.vi,9)-.5)*4,k})});
   return m;
 }
 function render(dt){
@@ -2892,6 +2892,8 @@ function render(dt){
     const y=mod(t.uy*PH+py+t.oy,PH)-(PH-H)/2-my*10*d;
     let X=x,Y=y,S=1;const h=t.size*t.rr+60;
     if(gB>0){
+      if(t.cycle>0){if(t.el.style.display!=="none")t.el.style.display="none";continue}
+      else if(t.el.style.display==="none")t.el.style.display="";
       const on=!t.el.classList.contains("dim");const q=spin(on?sphere(VN===10?SPHERE_ORDER_10[t.vi]:t.vi,VN):sphere(tiles.length===10?SPHERE_ORDER_10[n]:n,tiles.length),rotX,rotY),z=q[2],ps=.38+.74*Math.pow((z+1)/2,1.35);
       t.gz=z;
       const Rv=on&&VN<=5?R*.62:R,gx=gcx+q[0]*Rv*rRatio-t.size/2,gy=gcy+q[1]*Rv-h/2,gs=gw/(t.size||200)*ps;
@@ -2900,14 +2902,24 @@ function render(dt){
       const zi=t===held?99999:1000+Math.round(z*400);if(t._z!==zi){t._z=zi;t.el.style.zIndex=zi}
       {/* cards deep behind the globe are hidden outright: no paint, no composite */const hv=(gB>.85&&on&&z<(mobG?-.42:-.62))?"hidden":"";if(t._gv!==hv){t._gv=hv;t.el.style.visibility=hv}}const pe=(gB>.5&&(z<-.2||!on))?"none":"";if(t._pe!==pe){t._pe=pe;t.el.style.pointerEvents=pe}t._g=1;
     }else if(fB>0&&gridT&&gridT.get(t)){
+      if(t.cycle>0){if(t.el.style.display!=="none")t.el.style.display="none";continue}
+      else if(t.el.style.display==="none")t.el.style.display="";
       const g=gridT.get(t);X=x+(g.x-x)*fB;Y=y+(g.y-y)*fB;S=1+(g.s-1)*fB;t._r=g.r*fB;
       const zi=t===held?99999:500+g.k;if(t._z!==zi){t._z=zi;t.el.style.zIndex=zi}t._g=1;
-    }else if(t._g){t._g=0;t.gz=undefined;t._o=t._z=t._pe=undefined;if(t._gv){t._gv="";t.el.style.visibility=""}t.el.style.opacity="";t.btn.style.opacity="";t.el.style.zIndex=Math.round(t.depth*100);t.el.style.pointerEvents=""}
+    }else if(t._g){
+      t._g=0;t.gz=undefined;t._o=t._z=t._pe=undefined;
+      if(t._gv){t._gv="";t.el.style.visibility=""}
+      t.el.style.opacity="";t.btn.style.opacity="";
+      t.el.style.zIndex=Math.round(t.depth*100);t.el.style.pointerEvents="";
+      if(t.el.style.display==="none")t.el.style.display="";
+    }else{
+      if(t.cycle>0&&t.el.style.display==="none")t.el.style.display="";
+    }
     t.cx=X+t.size/2;t.cy=Y+h/2;
+    t.el.style.transform=`translate3d(${X.toFixed(1)}px,${Y.toFixed(1)}px,0)${S!==1?` scale(${S.toFixed(4)})`:""}${t._r&&fB>0&&gB===0?` rotate(${t._r.toFixed(2)}deg)`:""}${sk&&gB===0?` skewY(${(sk*d).toFixed(2)}deg)`:""}`;
     /* cards fully off screen are hidden and skipped, so the browser only restyles what you can see */
     {const m=120,sz=t.size*S,hh=h*S,off=gB===0&&fB===0&&t!==held&&(X+t.size/2+sz/2<-m||X+t.size/2-sz/2>W+m||Y+h/2+hh/2<-m||Y+h/2-hh/2>H+m);
      if(off){if(!t._off){t._off=1;t.el.style.visibility="hidden"}continue}else if(t._off){t._off=0;t.el.style.visibility=""}}
-    t.el.style.transform=`translate3d(${X.toFixed(1)}px,${Y.toFixed(1)}px,0)${S!==1?` scale(${S.toFixed(4)})`:""}${t._r&&fB>0&&gB===0?` rotate(${t._r.toFixed(2)}deg)`:""}${sk&&gB===0?` skewY(${(sk*d).toFixed(2)}deg)`:""}`;
   }
 }
 /* touch screens have no hover: the card nearest the middle of the screen becomes the active one,
@@ -2920,7 +2932,7 @@ function focusCenter(now){
     if(t.el.classList.contains("dim"))continue;
     if(gB>.5&&t.gz!==undefined&&t.gz<.15)continue;
     const dx=t.cx-fx,dy=t.cy-fy,dd=dx*dx+dy*dy*1.3;
-    if(dd<bd){bd=dd;best=t.i}
+    if(dd<bd){bd=dd;best=t.vi}
   }
   /* while a category filter is on, its colour stays; the centred card only updates the name */
   if(best>=0&&best!==hot)setHot(best,activeFilter==="All");
@@ -3073,7 +3085,7 @@ function updateTiles(){
   hint.textContent=f==="All"?`${K.length} categories · ${P.length} projects`:`${LONG[f]} · ${n} categories · ${P.filter(p=>p.f===f).length} projects`;
   if(first>=0&&tiles[hot]&&tiles[hot].el.classList.contains("dim"))setHot(first,false);
 }
-function visible(){return tiles.filter(t=>!t.el.classList.contains("dim")).map(t=>t.i)}
+function visible(){return tiles.filter(t=>t.cycle===0&&!t.el.classList.contains("dim")).map(t=>t.vi)}
 
 /* ---------- panel content ---------- */
 const cats=FILTERS.slice(1);
@@ -3214,7 +3226,7 @@ function route(){
       open=pSheet;color=p.bg;document.title=p.t+" · Graphic Knight";flip(nowLabel,p.t);flip(nowSub,p.one);
     }
   }
-  if(h==="work"&&prev&&prev.startsWith("c-")&&KBY[prev.slice(2)]&&!GLOBE){const ki=K.indexOf(KBY[prev.slice(2)]);const t=tiles.find(x=>x.i===ki);if(t){if(activeFilter!=="All")applyFilter("All",false);setHot(ki,false);panTo(t)}}
+  if(h==="work"&&prev&&prev.startsWith("c-")&&KBY[prev.slice(2)]&&!GLOBE){const ki=K.indexOf(KBY[prev.slice(2)]);const t=tiles.find(x=>x.vi===ki&&x.cycle===0)||tiles.find(x=>x.i===ki);if(t){if(activeFilter!=="All")applyFilter("All",false);setHot(ki,false);panTo(t)}}
   if(!/^[pc]-/.test(h))document.title="Graphic Knight — 2D/3D Artist & Animator";
   {const PG={about:["About","Hi, I\u2019m Graphic Knight, a creative designer."],services:["Services","Everything people see before they ever meet you."],process:["Process","How a project goes, from questions to files."],contact:["Contact","Let\u2019s connect directly on WhatsApp: +1 713 769 4958."]};if(PG[h]){flip(nowLabel,PG[h][0]);flip(nowSub,PG[h][1])}else if(!open&&prev&&/^(p-|about|services|process|contact)/.test(prev)){const k=K[hot];if(k){flip(nowLabel,k.name);flip(nowSub,k.intro)}}}
   markMenus();
@@ -3232,7 +3244,7 @@ function goHome(e){
   if(activeFilter!=="All")applyFilter("All",false);
   pan=null;vx=vy=wx=wy=0;
   if(location.hash!=="#work"){location.hash="work"}else{route()}
-  {const t=tiles[0];if(t&&!GLOBE)panTo(t)}
+  {const t=tiles.find(x=>x.vi===0&&x.cycle===0)||tiles[0];if(t&&!GLOBE)panTo(t)}
   setHot(0,true);
 }
 document.querySelector("#brand a").addEventListener("click",goHome);
@@ -3242,7 +3254,7 @@ addEventListener("keydown",e=>{
   if(sheetOpen()||/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;
   if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
     const v=visible();if(!v.length)return;let k=v.indexOf(hot);k=k<0?0:(k+(e.key==="ArrowRight"?1:-1)+v.length)%v.length;
-    setHot(v[k],true);panTo(tiles[v[k]]);e.preventDefault();
+    setHot(v[k],true);panTo(tiles.find(x=>x.vi===v[k]&&x.cycle===0)||tiles[v[k]]);e.preventDefault();
   }
   if(e.key==="Enter"&&document.activeElement===document.body){location.hash="c-"+K[hot].key}
 });
