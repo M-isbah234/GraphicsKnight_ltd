@@ -22,6 +22,7 @@
 
 - Production Website: [graphicknight.cloud](https://graphicknight.cloud)
 - Primary Direct Inquiry: [WhatsApp Direct Message](https://wa.me/17137694958) (+1 713 769 4958)
+- Official Email: [graphicknight93@gmail.com](mailto:graphicknight93@gmail.com)
 - Studio Location: Utah (UT), United States
 - Verification Notice: Graphic Knight is active on Discord, Reddit, and Twitter/X. All client engagements and commission agreements must be validated directly via official WhatsApp or email before conducting transactions.
 

@@ -526,6 +526,12 @@ h1.big em{font-size:1.32em;line-height:.7;color:color-mix(in srgb,var(--ink) 92%
 #nav a.hire{background:#14A800;color:#fff;border-color:#14A800}
 #nav a.hire::before{background:#0f7d00}
 #nav a.hire:hover{color:#fff;border-color:#0f7d00}
+#nav a.mail-btn{width:34px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:color-mix(in srgb,var(--paper),#fff 22%);color:var(--ink);border-color:color-mix(in srgb,var(--ink) 18%,transparent)}
+#nav a.mail-btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#nav a.mail-btn::before{background:var(--ink)}
+#nav a.mail-btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+html.dark #nav a.mail-btn{background:color-mix(in srgb,var(--paper),#fff 10%);color:#fff8ef;border-color:rgba(255,248,239,.18)}
+html.dark #nav a.mail-btn:hover{background:#fff8ef;color:#14110d;border-color:#fff8ef}
 
 /* ================= performance pass ================= */
 /* no page-wide animated color variable: one style recalc per recolor instead of 60 to 144 */
@@ -1598,10 +1604,10 @@ body.filtering .tile.dim{opacity:.035!important}
   }
 
   /* WhatsApp Button (Row 1, Right) */
-  #nav a.hire {
+  #nav a.hire:not(.mail-btn) {
     position: fixed!important;
     top: calc(10px + env(safe-area-inset-top, 0px))!important;
-    right: max(12px, calc(env(safe-area-inset-right, 0px) + 12px))!important;
+    right: max(48px, calc(env(safe-area-inset-right, 0px) + 48px))!important;
     height: 32px!important;
     line-height: 32px!important;
     padding: 0 11px!important;
@@ -1619,6 +1625,39 @@ body.filtering .tile.dim{opacity:.035!important}
     color: #fff!important;
     border: 1px solid #14A800!important;
     box-shadow: 0 2px 10px -2px rgba(20, 168, 0, 0.35)!important;
+  }
+
+  /* Email Icon Button (Row 1, Far Right) */
+  #nav a.mail-btn {
+    position: fixed!important;
+    top: calc(10px + env(safe-area-inset-top, 0px))!important;
+    right: max(12px, calc(env(safe-area-inset-right, 0px) + 12px))!important;
+    width: 32px!important;
+    height: 32px!important;
+    padding: 0!important;
+    border-radius: 50%!important;
+    display: inline-flex!important;
+    align-items: center!important;
+    justify-content: center!important;
+    z-index: 960!important;
+    box-sizing: border-box!important;
+    background: color-mix(in srgb, var(--paper), #fff 22%)!important;
+    color: var(--ink)!important;
+    border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent)!important;
+  }
+  html.dark #nav a.mail-btn {
+    background: color-mix(in srgb, var(--paper), #fff 12%)!important;
+    color: #fff8ef!important;
+    border: 1px solid rgba(255, 248, 239, .22)!important;
+  }
+  #nav a.mail-btn svg {
+    width: 14px!important;
+    height: 14px!important;
+    fill: none!important;
+    stroke: currentColor!important;
+    stroke-width: 2!important;
+    stroke-linecap: round!important;
+    stroke-linejoin: round!important;
   }
 
   /* Navigation Links Row (Row 2, Centered) */
@@ -1707,12 +1746,17 @@ body.filtering .tile.dim{opacity:.035!important}
   .brand-name {
     font-size: 12px!important;
   }
-  #nav a.hire {
-    right: 8px!important;
+  #nav a.hire:not(.mail-btn) {
+    right: 42px!important;
     height: 30px!important;
     line-height: 30px!important;
-    font-size: 9px!important;
+    font-size: 8.5px!important;
     padding: 0 8px!important;
+  }
+  #nav a.mail-btn {
+    right: 8px!important;
+    width: 30px!important;
+    height: 30px!important;
   }
   #nav {
     padding-top: calc(44px + env(safe-area-inset-top, 0px))!important;
@@ -2016,6 +2060,7 @@ body.filtering .tile.dim{opacity:.035!important}
   <a href="#services">Services</a>
   <a href="#process">Process</a>
   <a href="https://wa.me/17137694958" class="hire" target="_blank" rel="noopener" data-ext>WhatsApp ↗</a>
+  <a href="mailto:graphicknight93@gmail.com" class="hire mail-btn" aria-label="Email Graphic Knight" title="Email: graphicknight93@gmail.com" data-ext><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></a>
 </nav>
 
 <aside id="top-ticker" class="top-ticker chrome chrome-in" aria-label="Important Notice Announcement">
@@ -2024,25 +2069,25 @@ body.filtering .tile.dim{opacity:.035!important}
       <div class="ticker-unit">
         <span class="ticker-badge">⚠️ IMPORTANT NOTICE</span>
         <span class="ticker-lead">MUST READ:</span>
-        <span class="ticker-body">I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email or WhatsApp (<a href="https://wa.me/17137694958" target="_blank" rel="noopener" class="ticker-wa">+1 713 769 4958</a>) before making any payments. Stay safe! Beware of impersonators. Thank you.</span>
+        <span class="ticker-body">I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email (<a href="mailto:graphicknight93@gmail.com" class="ticker-wa">graphicknight93@gmail.com</a>) or WhatsApp (<a href="https://wa.me/17137694958" target="_blank" rel="noopener" class="ticker-wa">+1 713 769 4958</a>) before making any payments. Stay safe! Beware of impersonators. Thank you.</span>
         <span class="ticker-star">✦</span>
       </div>
       <div class="ticker-unit">
         <span class="ticker-badge">⚠️ IMPORTANT NOTICE</span>
         <span class="ticker-lead">MUST READ:</span>
-        <span class="ticker-body">I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email or WhatsApp (<a href="https://wa.me/17137694958" target="_blank" rel="noopener" class="ticker-wa">+1 713 769 4958</a>) before making any payments. Stay safe! Beware of impersonators. Thank you.</span>
+        <span class="ticker-body">I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email (<a href="mailto:graphicknight93@gmail.com" class="ticker-wa">graphicknight93@gmail.com</a>) or WhatsApp (<a href="https://wa.me/17137694958" target="_blank" rel="noopener" class="ticker-wa">+1 713 769 4958</a>) before making any payments. Stay safe! Beware of impersonators. Thank you.</span>
         <span class="ticker-star">✦</span>
       </div>
       <div class="ticker-unit" aria-hidden="true">
         <span class="ticker-badge">⚠️ IMPORTANT NOTICE</span>
         <span class="ticker-lead">MUST READ:</span>
-        <span class="ticker-body">I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email or WhatsApp (<a href="https://wa.me/17137694958" target="_blank" rel="noopener" class="ticker-wa">+1 713 769 4958</a>) before making any payments. Stay safe! Beware of impersonators. Thank you.</span>
+        <span class="ticker-body">I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email (<a href="mailto:graphicknight93@gmail.com" class="ticker-wa">graphicknight93@gmail.com</a>) or WhatsApp (<a href="https://wa.me/17137694958" target="_blank" rel="noopener" class="ticker-wa">+1 713 769 4958</a>) before making any payments. Stay safe! Beware of impersonators. Thank you.</span>
         <span class="ticker-star">✦</span>
       </div>
       <div class="ticker-unit" aria-hidden="true">
         <span class="ticker-badge">⚠️ IMPORTANT NOTICE</span>
         <span class="ticker-lead">MUST READ:</span>
-        <span class="ticker-body">I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email or WhatsApp (<a href="https://wa.me/17137694958" target="_blank" rel="noopener" class="ticker-wa">+1 713 769 4958</a>) before making any payments. Stay safe! Beware of impersonators. Thank you.</span>
+        <span class="ticker-body">I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email (<a href="mailto:graphicknight93@gmail.com" class="ticker-wa">graphicknight93@gmail.com</a>) or WhatsApp (<a href="https://wa.me/17137694958" target="_blank" rel="noopener" class="ticker-wa">+1 713 769 4958</a>) before making any payments. Stay safe! Beware of impersonators. Thank you.</span>
         <span class="ticker-star">✦</span>
       </div>
     </div>
@@ -2102,14 +2147,18 @@ body.filtering .tile.dim{opacity:.035!important}
         <span>⚠️</span> IMPORTANT NOTICE — MUST READ
       </div>
       <p style="font-size: 15px; line-height: 1.6; color: var(--ink); margin-bottom: 8px;">
-        I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email or WhatsApp before making any payments.
+        I’m active on Discord, Reddit, Twitter/X, and other platforms. If anyone approaches you using my artwork or portfolio, please verify their identity with me through my official Email (<a href="mailto:graphicknight93@gmail.com" style="color:var(--ink);font-weight:600;text-decoration:underline;">graphicknight93@gmail.com</a>) or WhatsApp (<a href="https://wa.me/17137694958" target="_blank" rel="noopener" style="color:var(--ink);font-weight:600;text-decoration:underline;">+1 713 769 4958</a>) before making any payments.
       </p>
       <p style="font-size: 14.5px; font-weight: 600; line-height: 1.5; color: var(--soft); margin-bottom: 14px;">
         Stay safe! Beware of impersonators. Thank you.
       </p>
-      <div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
         <a class="pill" href="https://wa.me/17137694958" target="_blank" rel="noopener" style="background: #14A800; color: #fff; border-color: #14A800; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
           Verify via WhatsApp: +1 713 769 4958 <span class="arrow">↗</span>
+        </a>
+        <a class="pill" href="mailto:graphicknight93@gmail.com" style="background:#24201c;color:#fff8ef;border:1px solid rgba(255,248,239,.18);text-decoration:none;display:inline-flex;align-items:center;gap:6px;font-weight:600;">
+          <svg style="width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          Email: graphicknight93@gmail.com
         </a>
       </div>
     </div>
@@ -2175,10 +2224,11 @@ body.filtering .tile.dim{opacity:.035!important}
         <span class="mono soft">Official Contact Channel</span>
         <b>Graphic Knight</b>
         <span class="uprole">2D/3D artist and animator · UT, USA</span>
-        <ul class="mono"><li>Direct WhatsApp: +1 713 769 4958</li><li>Commission bookings, contracts &amp; milestones</li><li>Replies within 24 hours</li></ul>
+        <ul class="mono"><li>Direct WhatsApp: +1 713 769 4958</li><li>Official Email: <a href="mailto:graphicknight93@gmail.com" style="color:inherit;text-decoration:underline;">graphicknight93@gmail.com</a></li><li>Commission bookings, contracts &amp; milestones</li><li>Replies within 24 hours</li></ul>
       </div>
       <div class="upcta">
         <a class="pill big" id="upProfile" href="https://wa.me/17137694958" target="_blank" rel="noopener">Chat on WhatsApp <span class="arrow">↗</span></a>
+        <a class="pill" id="upEmail" href="mailto:graphicknight93@gmail.com" style="background:#24201c;color:#fff8ef;border:1px solid rgba(255,248,239,.18);text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:12px;padding:14px 20px;">Email Me <span class="arrow">↗</span></a>
         <a class="pill ghost" id="upInvite" href="https://wa.me/17137694958" target="_blank" rel="noopener">+1 713 769 4958 <span class="arrow">↗</span></a>
       </div>
     </div>
