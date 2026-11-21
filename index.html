@@ -1109,9 +1109,9 @@ body.sheet-open #viewBtn{display:none}
 .shine-ink{white-space:nowrap;font-weight:700!important;font-style:normal!important;background-image:linear-gradient(100deg,var(--ink) 0%,var(--ink) 38%,#fff 47%,#FCA311 53%,var(--ink) 62%,var(--ink) 100%)!important}
 
 /* ================= homepage: cards slide softly under the header and the bar ================= */
-.scrim.t{height:160px!important;background:linear-gradient(var(--paper) 0%,color-mix(in srgb,var(--paper) 92%,transparent) 38%,color-mix(in srgb,var(--paper) 45%,transparent) 70%,transparent)!important}
-.scrim.b{height:200px!important;background:linear-gradient(transparent,color-mix(in srgb,var(--paper) 55%,transparent) 40%,color-mix(in srgb,var(--paper) 94%,transparent) 80%)!important}
-@media (max-width:900px){.scrim.t{height:175px!important}.scrim.b{height:230px!important}}
+.scrim.t{height:200px!important;background:linear-gradient(180deg,var(--paper) 0%,color-mix(in srgb,var(--paper) 94%,transparent) 20%,color-mix(in srgb,var(--paper) 55%,transparent) 60%,transparent 100%)!important}
+.scrim.b{height:200px!important;background:linear-gradient(180deg,transparent 0%,color-mix(in srgb,var(--paper) 55%,transparent) 40%,color-mix(in srgb,var(--paper) 94%,transparent) 80%,var(--paper) 100%)!important}
+@media (max-width:900px){.scrim.t{height:230px!important}.scrim.b{height:230px!important}}
 /* tablets: one compact bar, no wrapped two-row block */
 @media (min-width:761px) and (max-width:1199px){#now .sub{display:none}#now .label{font-size:19px!important}#foot{padding:10px 12px 10px 18px}#filters .fbtn{font-size:11px;padding:8px 10px}}
 
@@ -2688,7 +2688,7 @@ function tiltStep(){tiltRaf=0;let busy=false;TILT.forEach((t,btn)=>{t.x+=(t.tx-t
   const done=Math.abs(t.tx-t.x)+Math.abs(t.ty-t.y)+Math.abs(t.ts-t.s)<.002;if(done){t.x=t.tx;t.y=t.ty;t.s=t.ts}
   btn.style.transform=(t.x===0&&t.y===0&&t.s===1)?"":`perspective(800px) rotateX(${(-t.y*9).toFixed(2)}deg) rotateY(${(t.x*9).toFixed(2)}deg) scale(${t.s.toFixed(4)})`;
   if(done&&t.x===0&&t.y===0&&t.s===1)TILT.delete(btn);else if(!done)busy=true});if(busy)tiltRaf=requestAnimationFrame(tiltStep)}
-const COLS=5,ROWS=Math.ceil(K.length/COLS);
+const COLS=4,ROWS=Math.ceil(K.length/COLS);
 K.forEach((k,i)=>{
   const el=document.createElement("div");el.className="tile kcard";
   const inner=document.createElement("div");inner.className="inner";inner.style.setProperty("--d",(.15+((i*7)%K.length)*.06).toFixed(2)+"s");
@@ -2715,7 +2715,8 @@ function layout(){
   const mob=W<760,tab=!mob&&W<1100;
   const base=mob?Math.max(118,W*.34):tab?Math.max(140,W*.2):Math.max(140,Math.min(270,W*.155));
   /* phones get a tighter field so the scattered cards stay dense and overlapping like desktop */
-  PW=mob?Math.max(W*2.05,760):tab?Math.max(W*1.75,1150):Math.max(W*1.5,1380);PH=mob?Math.max(H*1.25,1000)*ROWS/4:tab?Math.max(H*1.35,1150)*ROWS/4:Math.max(H*1.8,1320)*ROWS/3.6;
+  PW=mob?Math.max(W*2.05,760):tab?Math.max(W*1.75,1150):Math.max(W*1.5,1380);
+  PH=mob?Math.max(H+1000,Math.max(H*2.0,1800)):tab?Math.max(H+1200,Math.max(H*2.2,2100)):Math.max(H+1400,Math.max(H*2.3,2400));
   tiles.forEach(t=>{if(gridMode){t.el.style.width=t.el.style.height=t.el.style.zIndex="";return}t.size=base*(.75+t.depth*.5)*Math.min(1.08,1/Math.sqrt(Math.max(.75,t.rr)));t.el.style.width=t.size+"px";t.el.style.height="";t.el.style.zIndex=Math.round(t.depth*100)});
   /* every card owns one cell of a jittered grid and moves with the field as one sheet, so cards never slide over
      each other and every title stays readable; the jitter keeps the layout loose and hand-placed */
