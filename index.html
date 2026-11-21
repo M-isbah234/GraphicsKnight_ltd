@@ -1174,12 +1174,12 @@ body.sheet-open #viewBtn{display:none}
 .op-beam{position:absolute;top:-10%;bottom:-10%;left:-45vw;width:40vw;background:linear-gradient(90deg,transparent,rgba(252,163,17,.16),rgba(255,240,210,.38),rgba(252,163,17,.16),transparent);opacity:0;pointer-events:none;transform:skewX(-18deg)}
 #opener.play .op-beam{animation:beam 1.4s .02s cubic-bezier(.6,0,.3,1) forwards}
 @keyframes beam{0%{opacity:0;transform:translateX(0) skewX(-18deg)}20%{opacity:1}100%{opacity:0;transform:translateX(195vw) skewX(-18deg)}}
-.op-reel{position:absolute;left:50%;top:50%;width:min(360px,60vw);aspect-ratio:4/5;margin:calc(min(360px,60vw) * -.625) 0 0 calc(min(360px,60vw) / -2);border-radius:14px;overflow:hidden;opacity:0;background:#000;box-shadow:0 40px 120px -30px rgba(252,163,17,.45),0 0 0 1px rgba(255,248,239,.08);will-change:transform,opacity}
-.op-reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.08)}
+.op-reel{position:absolute;left:50%;top:50%;width:min(520px,46vw,60vh);aspect-ratio:5/4;margin:calc(min(520px,46vw,60vh) * -.4) 0 0 calc(min(520px,46vw,60vh) / -2);border-radius:14px;overflow:hidden;opacity:0;background:#000;box-shadow:0 40px 120px -30px rgba(252,163,17,.45),0 0 0 1px rgba(255,248,239,.08);will-change:transform,opacity}
+.op-reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.02)}
 #opener.play .op-reel{animation:reel 1.72s .24s cubic-bezier(.2,.7,.2,1) forwards}
 @keyframes reel{0%{opacity:0;transform:scale(.86) rotate(-2deg)}8%{opacity:1}78%{opacity:1;transform:scale(1) rotate(0)}100%{opacity:0;transform:scale(1.7)}}
-#opener.play .op-reel img{animation:cut .15s steps(1) none;animation-delay:calc(.3s + var(--k) * .15s)}
-#opener.play .op-reel img.last{animation:cut-hold .5s steps(1) forwards;animation-delay:1.35s}
+#opener.play .op-reel img{animation:cut .25s steps(1) none;animation-delay:calc(.28s + var(--k) * .25s)}
+#opener.play .op-reel img.last{animation:cut-hold .55s steps(1) forwards;animation-delay:1.28s}
 @keyframes cut{0%,100%{opacity:1}}
 @keyframes cut-hold{0%,100%{opacity:1}}
 .op-flash{position:absolute;inset:0;background:#fff3df;opacity:0;pointer-events:none}
@@ -1206,10 +1206,7 @@ body.sheet-open #viewBtn{display:none}
 .op-shine .op-b{color:transparent}
 #opener.play .op-shine{animation:tshine 1.2s 2.55s cubic-bezier(.5,0,.3,1) forwards}
 @keyframes tshine{to{background-position:-10% 0}}
-@media (max-width:760px){.op-lb{height:7vh}.op-reel{width:62vw;margin:calc(62vw * -.625) 0 0 -31vw}}
-
-.op-reel{width:min(440px,34vw,52vh);margin:calc(min(440px,34vw,52vh) * -.625) 0 0 calc(min(440px,34vw,52vh) / -2)}
-@media (max-width:760px){.op-reel{width:72vw;margin:calc(72vw * -.625) 0 0 -36vw}}
+@media (max-width:760px){.op-lb{height:7vh}.op-reel{width:86vw;aspect-ratio:5/4;margin:calc(86vw * -.4) 0 0 -43vw}}
 
 .op-skip{top:calc(9vh + 18px + env(safe-area-inset-top,0px))!important}
 @media (max-width:760px){.op-skip{top:calc(7vh + 12px + env(safe-area-inset-top,0px))!important}}
@@ -3272,8 +3269,9 @@ else{
   document.getElementById("opEnter").addEventListener("click",()=>play(true));
   document.getElementById("opQuiet").addEventListener("click",()=>{try{localStorage.setItem("gk-sound","off")}catch(e){}play(false)});
   const arm=()=>{
-    /* montage: eight covers from different categories, decoded before the tap so every cut is instant */
-    const reel=document.getElementById("opReel");const picks=[];const seen=new Set();for(const t of tiles){const im=t.btn.querySelector("img");if(im&&!seen.has(im.src)){seen.add(im.src);picks.push(im.src)}if(picks.length>=8)break}
+    /* montage: five story sequence frames, decoded before the tap so every cut is instant */
+    const reel=document.getElementById("opReel");
+    const picks=['img/intro/intro-1.jpg','img/intro/intro-2.jpg','img/intro/intro-3.jpg','img/intro/intro-4.jpg','img/intro/intro-5.jpg'];
     picks.forEach((s,k)=>{const im=new Image();im.src=s;im.alt="";im.decoding="async";im.style.setProperty("--k",k);if(k===picks.length-1)im.className="last";if(im.decode)im.decode().catch(()=>{});reel.appendChild(im)});
     /* film grain texture, drawn once */
     try{const c=document.createElement("canvas");c.width=c.height=180;const g=c.getContext("2d"),d=g.createImageData(180,180);for(let p=0;p<d.data.length;p+=4){const v=Math.random()*255|0;d.data[p]=d.data[p+1]=d.data[p+2]=v;d.data[p+3]=255}g.putImageData(d,0,0);document.getElementById("opGrain").style.backgroundImage=`url(${c.toDataURL()})`}catch(e){}
