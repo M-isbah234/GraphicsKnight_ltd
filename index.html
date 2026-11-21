@@ -2729,6 +2729,16 @@ function layout(){
     const r2_y = topY + availH * 0.84;
     const gap3 = Math.min(W * 0.28, 400);
     const gap4 = Math.min(W * 0.23, 330);
+    
+    // Curated 3-4-3 alignment across viewport:
+    // Row 0: Child Book (9), 2D Animation (8), Manga Art (2)
+    const POS_10 = [
+      null, null,
+      {cx: W * 0.5 + gap3,        cy: r0_y}, // 2: Manga Art
+      null, null, null, null, null,
+      {cx: W * 0.5,               cy: r0_y}, // 8: 2D Animation
+      {cx: W * 0.5 - gap3,        cy: r0_y}  // 9: Child Book Illustration
+    ];
     const cw=PW/COLS,ch=PH/ROWS,gap=mob?10:22;
     tiles.forEach(t=>{let hh=t.el.offsetHeight||t.size*t.rr+60;const fit=Math.min(1,(cw-gap)/t.size,(ch-gap)/hh);if(fit<1){t.size*=fit;t.el.style.width=t.size+"px";hh=t.el.offsetHeight||hh*fit}t.hh=hh;
       const sl=SLOTS[t.i],col=sl%COLS,row=Math.floor(sl/COLS);
