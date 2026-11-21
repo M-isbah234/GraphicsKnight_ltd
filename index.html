@@ -2718,12 +2718,21 @@ function layout(){
   PW=mob?Math.max(W*2.05,760):tab?Math.max(W*1.75,1150):Math.max(W*1.5,1380);
   PH=mob?Math.max(H+1000,Math.max(H*2.0,1800)):tab?Math.max(H+1200,Math.max(H*2.2,2100)):Math.max(H+1400,Math.max(H*2.3,2400));
   tiles.forEach(t=>{if(gridMode){t.el.style.width=t.el.style.height=t.el.style.zIndex="";return}t.size=base*(.75+t.depth*.5)*Math.min(1.08,1/Math.sqrt(Math.max(.75,t.rr)));t.el.style.width=t.size+"px";t.el.style.height="";t.el.style.zIndex=Math.round(t.depth*100)});
-  /* every card owns one cell of a jittered grid and moves with the field as one sheet, so cards never slide over
-     each other and every title stays readable; the jitter keeps the layout loose and hand-placed */
-  if(!gridMode){const cw=PW/COLS,ch=PH/ROWS,gap=mob?10:22;
+  /* every card owns one cell of a curated grid and moves with the field as one sheet, so cards never slide over
+     each other and every title stays readable; precisely aligned on screen at launch */
+  if(!gridMode){
+    const topY = tab ? 96 : (mob ? 84 : 112);
+    const botY = (footTop > 200 ? footTop : H - 120) - (mob ? 12 : 20);
+    const availH = Math.max(300, botY - topY);
+    const r0_y = topY + availH * 0.16;
+    const r1_y = topY + availH * 0.50;
+    const r2_y = topY + availH * 0.84;
+    const gap3 = Math.min(W * 0.28, 400);
+    const gap4 = Math.min(W * 0.23, 330);
+    const cw=PW/COLS,ch=PH/ROWS,gap=mob?10:22;
     tiles.forEach(t=>{let hh=t.el.offsetHeight||t.size*t.rr+60;const fit=Math.min(1,(cw-gap)/t.size,(ch-gap)/hh);if(fit<1){t.size*=fit;t.el.style.width=t.size+"px";hh=t.el.offsetHeight||hh*fit}t.hh=hh;
-      const sl=SLOTS[t.i],col=sl%COLS,row=Math.floor(sl/COLS),stag=(row%2)*cw*.18;
-      t.ux=(col*cw+stag*(rand(t.i,4)>.5?1:-1)*0+gap/2+rand(t.i,1)*Math.max(0,cw-gap-t.size))/PW;
+      const sl=SLOTS[t.i],col=sl%COLS,row=Math.floor(sl/COLS);
+      t.ux=(col*cw+gap/2+rand(t.i,1)*Math.max(0,cw-gap-t.size))/PW;
       t.uy=(row*ch+gap/2+rand(t.i,2)*Math.max(0,ch-gap-hh))/PH})}
 }
 let px=0,py=0,vx=0,vy=0,moved=0,dragging=false,lx=0,ly=0;
