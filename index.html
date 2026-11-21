@@ -2732,10 +2732,15 @@ function layout(){
     
     // Curated 3-4-3 alignment across viewport:
     // Row 0: Child Book (9), 2D Animation (8), Manga Art (2)
+    // Row 1: Character illustration (0), Comic MLP (1), Most Valuable Client (3), Branding (5)
     const POS_10 = [
-      null, null,
+      {cx: W * 0.5 - 1.5 * gap4, cy: r1_y}, // 0: Character illustration
+      {cx: W * 0.5 - 0.5 * gap4, cy: r1_y}, // 1: Comic MLP
       {cx: W * 0.5 + gap3,        cy: r0_y}, // 2: Manga Art
-      null, null, null, null, null,
+      {cx: W * 0.5 + 0.5 * gap4, cy: r1_y}, // 3: Most Valuable Client
+      null,
+      {cx: W * 0.5 + 1.5 * gap4, cy: r1_y}, // 5: Branding
+      null, null,
       {cx: W * 0.5,               cy: r0_y}, // 8: 2D Animation
       {cx: W * 0.5 - gap3,        cy: r0_y}  // 9: Child Book Illustration
     ];
