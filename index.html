@@ -2786,7 +2786,18 @@ GRIDQ.addEventListener?GRIDQ.addEventListener("change",()=>{setGrid();layout();r
 /* ---------- globe view ---------- */
 let GLOBE=false;/* every visit opens in the scatter view */
 var introOn=false;let gP=GLOBE?1:0;let fB=0,VN=0,footTop=0,gridT=null,gB=GLOBE?1:0,rotX=-.22,rotY=0,vrx=0,vry=0,spinDir=1,gHover=false;
-function sphere(k,N){if(N<7){const th=k/N*Math.PI*2;return [Math.cos(th),0,Math.sin(th)]}const y=1-(k+.5)*2/N,r=Math.sqrt(1-y*y),th=k*2.399963;return [Math.cos(th)*r,y,Math.sin(th)*r]}
+const SPHERE_ORDER_10=[0,1,5,2,6,3,7,8,4,9];
+function sphere(k,N){
+  if(N<7){const th=k/N*Math.PI*2;return [Math.cos(th),0,Math.sin(th)]}
+  if(N===10){
+    const isUp=k<5,idx=k%5;
+    const y=isUp?0.36:-0.36,r=Math.sqrt(1-y*y);
+    const th=(idx+(isUp?0:0.5))*2*Math.PI/5;
+    return [Math.cos(th)*r,y,Math.sin(th)*r];
+  }
+  const y=1-(k+.5)*2/N,r=Math.sqrt(1-y*y),th=k*2.399963;
+  return [Math.cos(th)*r,y,Math.sin(th)*r];
+}
 function spin(p,rx,ry){const cy=Math.cos(ry),sy=Math.sin(ry),cx=Math.cos(rx),sx=Math.sin(rx);const x1=p[0]*cy+p[2]*sy,z1=-p[0]*sy+p[2]*cy;return [x1,p[1]*cx-z1*sx,p[1]*sx+z1*cx]}
 /* the filtered cards settle into a tidy, slightly tilted layout centered between header and bottom bar */
 function focusGrid(){
