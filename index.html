@@ -2856,7 +2856,7 @@ function render(dt){
     const y=mod(t.uy*PH+py+t.oy,PH)-(PH-H)/2-my*10*d;
     let X=x,Y=y,S=1;const h=t.size*t.rr+60;
     if(gB>0){
-      const on=!t.el.classList.contains("dim");const q=spin(on?sphere(t.vi,VN):sphere(n,tiles.length),rotX,rotY),z=q[2],ps=.38+.74*Math.pow((z+1)/2,1.35);
+      const on=!t.el.classList.contains("dim");const q=spin(on?sphere(VN===10?SPHERE_ORDER_10[t.vi]:t.vi,VN):sphere(tiles.length===10?SPHERE_ORDER_10[n]:n,tiles.length),rotX,rotY),z=q[2],ps=.38+.74*Math.pow((z+1)/2,1.35);
       t.gz=z;
       const Rv=on&&VN<=5?R*.62:R,gx=gcx+q[0]*Rv*rRatio-t.size/2,gy=gcy+q[1]*Rv-h/2,gs=gw/(t.size||200)*ps;
       X=x+(gx-x)*gB;Y=y+(gy-y)*gB;S=1+(gs-1)*gB;
